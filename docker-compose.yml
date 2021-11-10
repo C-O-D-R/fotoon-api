@@ -6,7 +6,10 @@ services:
     ports:
       - 80
     environment:
-      - DEV_MODE=true
-      - MONGO_SRV=mongodb+srv://api:2bbbSk29oPGDk2JH@cluster.j5r6x.mongodb.net/fotoon?authSource=admin&replicaSet=atlas-j07nnk-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true
-      - SERVER_JWT_SECRET=QNVUMg8FHqNAMYbUmVkhKrVQB5YvpD3Ch5HMgy9VaHcYy7quu47b8jDMt4kEhMtdkPqJhwK5mgwQQ3MqG5LMyfMB5MQbggd3w7KKydebeNkCZJ3xTRyXGySXMCBkvtvAeyhVJB6BfvCNre8sKJTTY2UWkxtSPB6C3hdCkTm2vFnap7vJxvY6fBv9dByhmrKq9ymuD9qahwF5EpbzEYP6gyzXRccAKBs23PKJbK7k88ku8BErzXkGSEvqfkRgmSrK
+      - DEV_MODE=
+      - MONGO_SRV=
+      - SERVER_JWT_SECRET=
+      - SSL_PRIVATE_KEY=
+      - SSL_CERTIFICATE=
+      - SSL_CHAIN=
     restart: unless-stopped
