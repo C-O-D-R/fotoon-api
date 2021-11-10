@@ -2,7 +2,7 @@
 // Imports
 // ----------------------------------------------------------------
 // DOTENV
-import { config } from 'DOTENV';
+import { config } from 'dotenv';
 config();
 
 // Express
