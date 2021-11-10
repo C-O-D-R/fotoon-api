@@ -1,3 +1,6 @@
+// ----------------------------------------------------------------
+// Imports
+// ----------------------------------------------------------------
 // DOTENV
 import { config } from 'DOTENV';
 config();
@@ -14,11 +17,18 @@ import jwt from 'jsonwebtoken';
 // User Schema
 import UserSchema from '../models/UserSchema.js';
 
+
+// --------------------------------------------------------------
 // Router
+// --------------------------------------------------------------
 const Router = express.Router();
 export default Router;
 
+
+// --------------------------------------------------------------
 // Routes
+// --------------------------------------------------------------
+// Login
 Router.post('/', async (req, res) => {
     // Request Credentials
     const usernamePlain = req.body.username;
@@ -42,6 +52,6 @@ Router.post('/', async (req, res) => {
     } catch (error) {
         // Error Failed Authentication
         terminal.error(`[SERVER] Failed at login: ${error}`);
-        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server errror: ${error}`});
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error: ${error}`});
     }
 });

@@ -51,7 +51,10 @@ Server.get('/', (req, res) => {
 
 // API
 import login from './api/login.js'; // Import Login
+import register from './api/register.js'; // Import Register
+
 Server.use('/login', login); // Use Login
+Server.use('/register', register); // Use Register
 
 // HTTPS Server
 if (process.env.DEV_MODE == 'true') {
