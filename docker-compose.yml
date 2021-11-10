@@ -8,5 +8,5 @@ services:
     environment:
       - DEV_MODE=true
       - MONGO_SRV=mongodb+srv://api:2bbbSk29oPGDk2JH@cluster.j5r6x.mongodb.net/fotoon?authSource=admin&replicaSet=atlas-j07nnk-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true
-      - SERVER_JWT_SECRET=WUA}wQuTsg76k6L]tXd"*~S,k.HGSSj6zT;sf=?_"/x=U_~zUEF,KE{-T>37*A]S&{rPCv{<e!WK5{P{]hh3-\.UxPL`W+q.BUzgD~+X_EM_gk~-=RT3FPC25!>L6_L>?L5*{9WWV/(}H=ccvF8JXn`B(rphVJ&37:_$/HRA:vEBx:?!sKj'2qL;uNDu`~wJx}@@N&mk2jN#+e^+m`<<%F{>u$GW<^&$P5SEya,~SpxnuY:;`9e@Q/%\>=W+XS?F
+      - SERVER_JWT_SECRET=QNVUMg8FHqNAMYbUmVkhKrVQB5YvpD3Ch5HMgy9VaHcYy7quu47b8jDMt4kEhMtdkPqJhwK5mgwQQ3MqG5LMyfMB5MQbggd3w7KKydebeNkCZJ3xTRyXGySXMCBkvtvAeyhVJB6BfvCNre8sKJTTY2UWkxtSPB6C3hdCkTm2vFnap7vJxvY6fBv9dByhmrKq9ymuD9qahwF5EpbzEYP6gyzXRccAKBs23PKJbK7k88ku8BErzXkGSEvqfkRgmSrK
     restart: unless-stopped
