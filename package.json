@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon .",
-    "start": "node ."
+    "start": "node .",
+    "build": "docker build -t codr/fotoon-api"
   },
   "repository": {
     "type": "git",
