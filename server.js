@@ -17,14 +17,17 @@ import mongoose from 'mongoose';
 // Body Parser
 import bodyParser from 'body-parser';
 
+// File Stream
+import fs from 'fs';
+
 
 // ----------------------------------------------------------------
 // Global Variables
 // ----------------------------------------------------------------
 // SSL Keys
-const privateKey = process.env.SSL_PRIVATE_KEY;
-const certificate = process.env.SSL_CERTIFICATE;
-const chain = process.env.SSL_CHAIN;
+const privateKey = fs.readFileSync(process.env.SSL_PRIVATE_KEY, 'utf8');
+const certificate = fs.readFileSync(process.env.SSL_CERTIFICATE, 'utf8');
+const chain = fs.readFileSync(process.env.SSL_CHAIN, 'utf8');
 const credentials = { key: privateKey, cert: certificate, ca: chain };
 
 // MongoDB SRV
