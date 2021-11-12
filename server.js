@@ -61,8 +61,6 @@ const swaggerUiOptions = {
     customJs: './static/swagger.js'
 }
 
-console.log()
-
 
 // ----------------------------------------------------------------
 // Main Code

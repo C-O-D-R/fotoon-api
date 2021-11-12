@@ -7,6 +7,7 @@ import express from 'express';
 // User Schema
 import UserSchema from '../models/UserSchema.js';
 
+
 // -------------------------------------------------------------
 // Router
 // -------------------------------------------------------------
@@ -45,6 +46,7 @@ Router.post('/register', authUser, async (req, res) => {
     return res.status(200).json({ status: 'success', code: 'key_regsitered', description: 'API key has been registered!', key: key });
 });
 
+
 // -------------------------------------------------------------
 // Helper Functions
 // -------------------------------------------------------------
@@ -58,6 +60,7 @@ function generateKey(length) {
     }
     return result;
 }
+
 
 // -------------------------------------------------------------
 // Documentation
