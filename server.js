@@ -9,6 +9,9 @@ require('dotenv').config();
 
 // Schemas
 const User = require('./models/user.js');
+const Post = require('./models/post.js');
+const Feed = require('./models/feed.js');
+const Comment = require('./models/comment.js');
 
 // Mongo DB
 mongoose.connect(process.env.MONGO_SRV, { useNewUrlParser: true, useUnifiedTopology: true });
