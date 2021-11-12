@@ -21,17 +21,18 @@ import UserSchema from '../models/UserSchema.js';
 // --------------------------------------------------------------
 // Router
 // --------------------------------------------------------------
+// Export Router
 const Router = express.Router();
 export default Router;
 
 
-// --------------------------------------------------------------
+// -------------------------------------------------------------
 // Routes
-// --------------------------------------------------------------
+// -------------------------------------------------------------
 // Login
 Router.post('/', async (req, res) => {
     // Request Credentials
-    const usernamePlain = req.body.username;
+    const usernamePlain = req.body.username.toLowerCase();
     const passwordPlain = req.body.password;
 
     // Request Database User
@@ -52,6 +53,98 @@ Router.post('/', async (req, res) => {
     } catch (error) {
         // Error Failed Authentication
         terminal.error(`[SERVER] Failed at login: ${error}`);
-        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error: ${error}`});
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}`});
     }
 });
+
+
+// --------------------------------------------------------------
+// Documentation
+// --------------------------------------------------------------
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *      summary: Prisijungti
+ *      description: Pateikus vartotojo vardą ir slaptažodį gaunamas JWT raktas, reikalingas tolimesnei autentifikacijai.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                              example: username
+ *                          password:
+ *                              type: string
+ *                              format: password
+ *                              example: password
+ *      responses:
+ *          '200':
+ *              summary: Prisijungti pavyko
+ *              description: BCrypt biblioteka patikrino ar slaptažodis sutampa su „hashed“ slaptažodiu ir JWT pasirašė raktą „token“.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/LoginSuccess'
+ *          '401':
+ *              summary: Prisijungti nepavyko
+ *              description: BCrypt biblioteka nurodė, kad slaptažodžiai skirtingi arba iškilo problema pasirašant JTW raktą.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/LoginFailed'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas BCrypt arba JWT bibliotekose.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
+ * 
+ * components:
+ *  schemas:
+ *      LoginSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: login_success
+ *              description:
+ *                  type: string
+ *                  example: User authenticated successfully!
+ *              token:
+ *                  type: string
+ *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOGM0NGFhOTczNGM2MTJiNTM0N2VlYiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MzY2MzI5MzN9.pC8aKnx-4FdcDOD2ZzkVPujWasV7J1FDIQF1YdoxyBw
+ * 
+ *      LoginFailed:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_credentials
+ *              description:
+ *                  type: string
+ *                  example: Invalid username or password!
+ *      
+ *      InternalError:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: server_error
+ *              description:
+ *                  type: string
+ *                  example: Internal server error <error message>  
+ */
