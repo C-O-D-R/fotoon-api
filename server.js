@@ -87,10 +87,12 @@ Server.get('/', (req, res) => {
 import dev from './api/dev.js'; // Import Dev Routes
 import login from './api/login.js'; // Import Login
 import register from './api/register.js'; // Import Register
+import user from './api/user.js'; // Import User
 // Route Uses
 Server.use('/dev', dev); // Use Dev Routes
 Server.use('/login', login); // Use Login
 Server.use('/register', register); // Use Register
+Server.use('/user', user); // Use Register
 
 // HTTPS Server
 if (process.env.DEV_MODE == 'true') {

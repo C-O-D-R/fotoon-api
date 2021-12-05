@@ -53,7 +53,7 @@ Router.post('/', async (req, res) => {
     } catch (error) {
         // Error Failed Authentication
         terminal.error(`[SERVER] Failed at login: ${error}`);
-        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}`});
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
     }
 });
 

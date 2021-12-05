@@ -24,6 +24,7 @@ export default Router;
 // Register
 Router.post('/', async (req, res) => {
     // Request Credentials
+    console.log(req.body);
     const usernamePlain = req.body.username.toLowerCase();
     const passwordPlain = req.body.password;
 
@@ -47,8 +48,8 @@ Router.post('/', async (req, res) => {
         return res.status(406).json({ status: 'error', code: 'invalid_password_length', description: 'Invalid password length (should be more than 8 characters)!' });
     }
 
-    if (usernamePlain.length <= 5 || usernamePlain.length >= 20) {
-        return res.status(406).json({ status: 'error', code: 'invalid_username_length', description: 'Invalid username length (should be >= 5 characters and <= 20)!' });
+    if (usernamePlain.length < 4 || usernamePlain.length > 20) {
+        return res.status(406).json({ status: 'error', code: 'invalid_username_length', description: 'Invalid username length (should be > 4 characters and < 20)!' });
     }
 
     // Hashed Password
