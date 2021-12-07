@@ -76,7 +76,7 @@ Router.get('/:id', async (req, res) => {
         if (!dbUser) return res.status(404).json({ status: 'error', code: 'invalid_user', description: `User not found` });
 
         // Success User Data
-        return res.status(200).json({ username: dbUser.username, profilePicture: dbUser.profilePicture });
+        return res.status(200).json({ status: 'success', code: 'request_success', description: 'Got user data', username: dbUser.username, profilePicture: dbUser.profilePicture });
 
     } catch (error) {
         // Failed User Data
@@ -84,3 +84,104 @@ Router.get('/:id', async (req, res) => {
         return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
     }
 });
+
+/**
+ * @swagger
+ * /user/{userId}:
+ *  get:
+ *      summary: Gauti vartotojo duomenis
+ *      description: Iš duomenų bazės atrenkame vartotojo informacija
+ *      responses:
+ *          '404':
+ *              summary: Neteisingas vartotojo ID 
+ *              description: Tikrinama ar yra toks egzistuojantis vartotojo ID
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/NotExistantUserID'
+ * 
+ *          '400':
+ *              summary: Neteisingas ID formatas
+ *              description: Pateiktas vartotojo ID yra neteisingo formato
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/NoSuchUserInDB'
+ * 
+ *          '200':
+ *              summary: Pavyko gauti vartotojo informaciją
+ *              description: Grąžinama vartotojo informacija
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SuccessfullGotUserData'
+ * 
+ *           '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
+ *         
+ * 
+ * components:
+ *  schemas:
+ *      NotExistantUserID:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_format
+ *              description:
+ *                  type: string
+ *                  example: Invalid format
+ * 
+ *       NoSuchUserInDB:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_user 
+ *              description:
+ *                  type: string
+ *                  example: User not found
+ * 
+ *         DataSuccesss:
+ *              type: object
+ *              properties:
+ *                  status:
+ *                      type: string
+ *                      example: success
+ *                  code:
+ *                      type: string
+ *                      example: request_success
+ *                  description:
+ *                      type: string
+ *                      example: Got user data 
+ *                  username:
+ *                      type: string
+ *                      example: username
+ *                  profilePicture:
+ *                      type: string
+ *                      example: base64 image     
+ * 
+ *          InternalError:
+ *              type: object
+ *              properties:
+ *                  status:
+ *                      type: string
+ *                      example: error
+ *                  code:
+ *                      type: string
+ *                      example: server_error
+ *                  description:
+ *                      type: string
+ *                      example: Internal server error <error message>
+ */
