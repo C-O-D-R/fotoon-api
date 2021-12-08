@@ -92,7 +92,7 @@ Router.get('/:id', async (req, res) => {
  * /user/update:
  *  patch:
  *      summary: Atnaujinti vartotojo informaciją
- *      description: Duomenų bazėje pakeičiama bendroji varotjo informacija
+ *      description: Duomenų bazėje pakeičiama bendroji vartotjo informacija
  *      tags:
  *          - user
  *      requestBody:
@@ -114,7 +114,7 @@ Router.get('/:id', async (req, res) => {
  *      responses:
  *          '200':
  *              summary: Vartotojo duomenys pakeisti
- *              description: Varotojo duomenys duomenų bazėje buvo atnaujinti
+ *              description: Vartotojo duomenys duomenų bazėje buvo atnaujinti
  *              content:
  *                  application/json:
  *                      schema:
@@ -135,7 +135,7 @@ Router.get('/:id', async (req, res) => {
  *      responses:
  *          '200':
  *              summary: Vartotojo duomenys gauti sėkmingai
- *              description: Kreipiamasi į duomenų bazę ir gaunami varotojo duomenys pagal jo ID.
+ *              description: Kreipiamasi į duomenų bazę ir gaunami vartotojo duomenys pagal jo ID.
  *              content:
  *                  application/json:
  *                      schema:
@@ -150,8 +150,8 @@ Router.get('/:id', async (req, res) => {
  *                          $ref: '#/components/schemas/RequestFailedInvalidFormat'
  * 
  *          '404':
- *              summary: Varotojas neegzistuoja
- *              description: Pateiktas varototjo ID neegzistuoja duomenų bazėje.
+ *              summary: Vartotojas neegzistuoja
+ *              description: Pateiktas vartototjo ID neegzistuoja duomenų bazėje.
  *              content:
  *                  application/json:
  *                      schema:
