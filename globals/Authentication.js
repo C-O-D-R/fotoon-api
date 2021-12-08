@@ -38,7 +38,7 @@ global.authUser = async function (req, res, next) {
     var userId;
 
     // Request Token
-    const token = req.body.token;
+    const token = req.body.data.token;
 
 
     // Token Validation

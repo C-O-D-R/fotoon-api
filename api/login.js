@@ -45,7 +45,7 @@ Router.post('/', async (req, res) => {
             const token = jwt.sign({ id: dbUser._id , username: dbUser.username}, process.env.SERVER_JWT_SECRET);
 
             // General Success Authentication
-            return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', token: token });
+            return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', data: { token: token }});
         } else {
             // Password/Username/JWT Failed Authentication
             return res.status(401).json({ status: 'error', code: 'invalid_credentials', description: 'Invalid username or password!' });
@@ -67,6 +67,8 @@ Router.post('/', async (req, res) => {
  *  post:
  *      summary: Prisijungti
  *      description: Pateikus vartotojo vardą ir slaptažodį gaunamas JWT raktas, reikalingas tolimesnei autentifikacijai.
+ *      tags:
+ *          - main
  *      requestBody:
  *          required: true
  *          content:
@@ -118,9 +120,12 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: User authenticated successfully!
- *              token:
- *                  type: string
- *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOGM0NGFhOTczNGM2MTJiNTM0N2VlYiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MzY2MzI5MzN9.pC8aKnx-4FdcDOD2ZzkVPujWasV7J1FDIQF1YdoxyBw
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      token:
+ *                          type: string
+ *                          example: <jwttoken>
  * 
  *      LoginFailed:
  *          type: object

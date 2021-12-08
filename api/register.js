@@ -87,6 +87,8 @@ Router.post('/', async (req, res) => {
  *  post:
  *      summary: Užsiregsitruoti
  *      description: Pateikus vartojo vardą ir slaptažodį, duomenų bazėje bus sukuriamas įrašas.
+ *      tags:
+ *          - main
  *      requestBody:
  *          required: true,
  *          content:

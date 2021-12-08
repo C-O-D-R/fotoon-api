@@ -44,21 +44,25 @@ const swaggerDocsOptions = {
         openapi: '3.0.0',
         info: {
             title: 'Fotoon API',
-            version: '0.0.1',
+            version: '0.0.2',
             description: 'Fotoon API sukurtas KA projektui.',
-            
+
             servers: [{
                 url: 'https://api.fotoon.app',
                 description: 'Pagrindinis API serveris.'
             }]
         }
     },
-    apis: ['server.js', './api/login.js', './api/register.js', './api/user.js']
+    apis: ['server.js', './api/login.js', './api/register.js', './api/user.js'],
+
 }
 
 const swaggerUiOptions = {
     customCssUrl: './static/swagger.css',
-    customJs: './static/swagger.js'
+    customJs: './static/swagger.js',
+    swaggerOptions: { 
+        defaultModelsExpandDepth: -1
+    }
 }
 
 
@@ -73,7 +77,7 @@ const swaggerDoc = swaggerJsDoc(swaggerDocsOptions);
 
 // Server
 const Server = express();
-Server.use('/docs/static',express.static('public'));
+Server.use('/docs/static', express.static('public'));
 Server.use(bodyParser.json());
 Server.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, swaggerUiOptions));
 
