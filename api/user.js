@@ -129,7 +129,7 @@ Router.get('/:id', async (req, res) => {
  * /user/{userId}:
  *  get:
  *      summary: Gauti vartotojo duomenis
- *      description: Pateikus vartojo ID gaunami jo duomenys
+ *      description: Pateikus vartotojo ID gaunami jo duomenys
  *      tags:
  *          - user
  *      responses:
