@@ -16,6 +16,9 @@ import https from 'https';
 // Express
 import express from 'express';
 
+// CORS
+import cors from 'cors';
+
 // Mongoose
 import mongoose from 'mongoose';
 
@@ -77,8 +80,9 @@ const swaggerDoc = swaggerJsDoc(swaggerDocsOptions);
 
 // Server
 const Server = express();
-Server.use('/docs/static', express.static('public'));
 Server.use(bodyParser.json());
+Server.use(cors());
+Server.use('/docs/static', express.static('public'));
 Server.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, swaggerUiOptions));
 
 // Root API ENDPOINT
@@ -101,7 +105,7 @@ Server.use('/user', user); // Use Register
 // HTTPS Server
 if (process.env.DEV_MODE == 'true') {
     // Port
-    const port = process.env.HTTPS_PORT || 80;
+    const port = process.env.PORT || 80;
 
     // Development Server
     const ServerDevelopment = http.createServer(Server);
@@ -131,7 +135,7 @@ if (process.env.DEV_MODE == 'true') {
     }
 
     // Port 
-    const port = process.env.HTTPS_PORT || 443;
+    const port = process.env.PORT || 443;
 
     // Secure Server
     const ServerSecure = https.createServer(credentials, Server);
