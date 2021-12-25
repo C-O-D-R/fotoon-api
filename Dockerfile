@@ -1,7 +1,6 @@
 FROM node:16
-WORKDIR /usr/src/app
+WORKDIR /usr/src/fotoon-api
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 80
 CMD [ "node", "server.js" ]
