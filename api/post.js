@@ -7,8 +7,9 @@ import express from 'express';
 // Post Schema Schema
 import PostSchema from '../models/PostSchema.js';
 
-//File Stream
+// File Stream
 import fs from 'fs';
+
 
 // -------------------------------------------------------------
 // Router
@@ -16,6 +17,7 @@ import fs from 'fs';
 // Export Router
 const Router = express.Router();
 export default Router;
+
 
 // -------------------------------------------------------------
 // Routes

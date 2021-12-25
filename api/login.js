@@ -45,7 +45,7 @@ Router.post('/', async (req, res) => {
             const token = jwt.sign({ id: dbUser._id , username: dbUser.username}, process.env.SERVER_JWT_SECRET);
 
             // General Success Authentication
-            return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', data: { token: token }});
+            return res.status(200).cookie('token', token, { httpOnly: true, secure: true }).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!'});
         } else {
             // Password/Username/JWT Failed Authentication
             return res.status(401).json({ status: 'error', code: 'invalid_credentials', description: 'Invalid username or password!' });
