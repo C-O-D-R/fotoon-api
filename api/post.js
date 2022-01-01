@@ -22,28 +22,30 @@ export default Router;
 // -------------------------------------------------------------
 // Routes
 // -------------------------------------------------------------
+
+
 //Post
-Router.post('/post', authUser, async (req, res) => {
+Router.post('/', async (req, res) => {
     //Global variables
     const caption = req.body.caption;
 
     //Check
-    if(caption.length > 100){
-        return res.status(406).json({status: 'error', code: 'invalid_caption_length', description: 'Invalid Caption lenght, must be no more than 100 characters'});
+    if (caption.length > 100) {
+        return res.status(406).json({ status: 'error', code: 'invalid_caption_length', description: 'Invalid Caption length, must be no more than 100 characters' });
     }
 
     //Creating Post
-    try{
+    try {
         await PostSchema.create({
             userId: req.user.id,
             postImage: req.body.postImage,
             caption: caption
         });
-        
-        //Success
-        return res.status(200).json({status: 'success', code: 'post_success', description: 'Post created successfully'});
 
-    }catch (error) {
+        //Success
+        return res.status(200).json({ status: 'success', code: 'post_success', description: 'Post created successfully' });
+
+    } catch (error) {
         // Failed Post Data
         terminal.error(`[SERVER] Failed at user: ${error}`);
         return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
@@ -52,9 +54,10 @@ Router.post('/post', authUser, async (req, res) => {
 });
 
 
+
 /**
  * @swagger
- * /post/post:
+ * /post/:
  *  patch:
  *      summary: Kuriamas posta
  *      description: Kuriamas postas prašant reikšmių iš PostSchema

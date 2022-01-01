@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 export default mongoose.model('PostSchema', new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'user' },
     postImage: { type: String, required: true },
-    caption: { type: String, trim: true, required: false },
+    caption: { type: String, trim: true, required: true},
     comments: [{ type: mongoose.Schema.Types.ObjectId }],
     date: { type: Date, default: Date.now }
 }, { versionkey: false, colection: 'posts' }));
