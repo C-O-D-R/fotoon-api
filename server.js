@@ -56,7 +56,7 @@ const swaggerDocsOptions = {
             }]
         }
     },
-    apis: ['server.js', './api/login.js', './api/register.js', './api/user.js'],
+    apis: ['server.js', './api/login.js', './api/register.js', './api/user.js', './api/post.js'],
 
 }
 

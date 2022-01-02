@@ -24,17 +24,17 @@ export default Router;
 // -------------------------------------------------------------
 
 
-//Post
-Router.post('/', async (req, res) => {
-    //Global variables
+// Post
+Router.post('/post', async (req, res) => {
+    // Global variables
     const caption = req.body.caption;
 
-    //Check
+    // Check
     if (caption.length > 100) {
         return res.status(406).json({ status: 'error', code: 'invalid_caption_length', description: 'Invalid Caption length, must be no more than 100 characters' });
     }
 
-    //Creating Post
+    // Creating Post
     try {
         await PostSchema.create({
             userId: req.user.id,
@@ -42,7 +42,7 @@ Router.post('/', async (req, res) => {
             caption: caption
         });
 
-        //Success
+        // Success
         return res.status(200).json({ status: 'success', code: 'post_success', description: 'Post created successfully' });
 
     } catch (error) {
@@ -54,17 +54,16 @@ Router.post('/', async (req, res) => {
 });
 
 
-
 /**
  * @swagger
- * /post/:
- *  patch:
+ * /post/post:
+ *  post:
  *      summary: Kuriamas posta
  *      description: Kuriamas postas prašant reikšmių iš PostSchema
  *      tags:
  *          - post
  *      responses:
- *          '200'
+ *          '200':
  *              summarry: Sekmingai sukurtas postas
  *              description: Sekmingai sukurti posto duomenys
  *              content:
