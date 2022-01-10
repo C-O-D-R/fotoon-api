@@ -42,7 +42,7 @@ Router.post('/', async (req, res) => {
     try {
         if (dbUser && await bcrypt.compare(passwordPlain, dbUser.password)) {
             // JWT Token
-            const token = jwt.sign({ id: dbUser._id , username: dbUser.username}, process.env.SERVER_JWT_SECRET);
+            const token = jwt.sign({ id: dbUser._id , username: dbUser.username}, process.env.JWT_SECRET);
 
             // General Success Authentication
             return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', data: { token: token }});

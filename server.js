@@ -106,7 +106,7 @@ Server.use('/user', user); // Use Register
 Server.use('/post', post); // Use post
 
 // HTTPS Server
-if (process.env.DEV_MODE == 'true') {
+if (process.env.DEV_MODE.toLowerCase() == 'true') {
     // Port
     const port = process.env.PORT || 80;
 
