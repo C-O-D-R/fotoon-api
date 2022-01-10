@@ -24,7 +24,6 @@ export default Router;
 // Register
 Router.post('/', async (req, res) => {
     // Request Credentials
-    console.log(req.body);
     const usernamePlain = req.body.username.toLowerCase();
     const passwordPlain = req.body.password;
 
