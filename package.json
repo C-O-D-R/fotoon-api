@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon .",
     "start": "node .",
-    "build": "docker build . -t codr/fotoon-api"
+    "dev": "nodemon .",
+    "docker-build": "docker build . -t codr/fotoon-api"
   },
   "repository": {
     "type": "git",
