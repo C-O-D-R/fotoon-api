@@ -68,9 +68,6 @@ Router.get('/:id', async (req, res) => {
 
     // Checking for DB and User
     try {
-        // Wrong ID Format
-        if (!userId.match(/^[0-9a-fA-F]{24}$/)) return res.status(400).json({ status: 'error', code: 'invalid_format', description: `Invalid format!` });
-
         // Request Database User
         const dbUser = await UserSchema.findOne({ _id: userId }).lean();
 

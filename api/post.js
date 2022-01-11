@@ -22,7 +22,47 @@ export default Router;
 // -------------------------------------------------------------
 // Routes
 // -------------------------------------------------------------
+// Get Post
+Router.get('/post/:id', async (req, res) => {
+    // Variables
+    var postId = req.params.id;
 
+    // Get Data
+    try {
+        var dbPost = await PostSchema.findOne({ _id: postId }).lean();
+    } catch (error) {
+        
+    }
+});
+
+// Gets Posts by Owner IDs
+Router.get('/posts', async (req, res) => {
+    // Variables
+    var userIds = req.body.ids;
+
+    // Data Array
+    var data = [];
+
+    // Get Data
+    try {
+        for (var i = 0; i < userIds.length; i++) {
+            var userId = userIds[i];
+            var posts = await PostSchema.find({ ownerId: userId }).lean();
+
+            for (var j = 0; j < posts.length; j++) {
+                var post = posts[j];
+                data.push(post);
+            }
+        }
+
+        // Success
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts Gotten', data: data });
+    } catch (error) {
+        // Failed Post Data
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
+});
 
 // Post
 Router.post('/post', async (req, res) => {
@@ -56,6 +96,44 @@ Router.post('/post', async (req, res) => {
 
 /**
  * @swagger
+ * /post/{postId}:
+ *  get:
+ *      summary: Gaunamas įrašas
+ *      description: Gaunamas įrašas pagal jo ID
+ *      tags:
+ *          - post
+ *      responses:
+ *          '200':
+ *              summary: Sėkmingai gautas įrašas
+ *              description:
+ *      
+ * /posts:
+ *  get:
+ *      summary: Gaunami įrašai
+ *      description: Pagal pateiktus varotojų ID's, gaunami visi su šiais ID's susiję įrašai
+ *      tags:
+ *          - post
+ *      requestBody:
+ *          required: true,
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          ids:
+ *                              type: array
+ *                              items:
+ *                                  type: string
+ *                                  example: <user ID>
+ *          
+ *      responses:
+ *          '200':
+ *              summary: Sėkmingai gauti įrašai
+ *              description: Sėkmingai gauti įrašai, pagal pateiktus ID's
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetPostsSuccess'
  * /post/post:
  *  post:
  *      summary: Kuriamas posta
@@ -81,6 +159,40 @@ Router.post('/post', async (req, res) => {
  * 
  * components:
  *  schemas:
+ *      GetPostsSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: get_posts_success
+ *              description:
+ *                  type: string
+ *                  example: Posts Gotten
+ *              data:
+ *                  type: array
+ *                  items: 
+ *                      type: object
+ *                      properties:
+ *                          ownerId:
+ *                              type: string
+ *                              example: <owner ID> 
+ *                          image:
+ *                              type: string
+ *                              example: <image base64> 
+ *                          caption:
+ *                              type: string
+ *                              example: <caption>
+ *                          comments:
+ *                              type: array
+ *                              items:
+ *                                  type: string
+ *                                  example: <comment ID>
+ *                          date:
+ *                              type: string
+ *                              example: <date> 
  *      PostSuccess:
  *          type: object
  *          properties:
