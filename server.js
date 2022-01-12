@@ -100,12 +100,14 @@ import login from './api/login.js';         // Import Login
 import register from './api/register.js';   // Import Register
 import user from './api/user.js';           // Import User
 import post from './api/post.js';           // Import Post
+import comment from './api/comment.js';     // Import Comment
 
 // Route Uses
 Server.use('/login', login);        // Use Login
 Server.use('/register', register);  // Use Register
 Server.use('/user', user);          // Use Register
-Server.use('/post', post);          // Use post
+Server.use('/post', post);          // Use Post
+Server.use('/comment', comment);    // Use Comment
 
 // HTTPS Server
 if (process.env.DEV_MODE.toLowerCase() == 'true') {
