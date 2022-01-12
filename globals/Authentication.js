@@ -25,12 +25,13 @@ global.authUser = async function (req, res, next) {
 
     // Token Validation
     try {
-        var user = jwt.verify(token, process.env.SERVER_JWT_SECRET);
+        var user = jwt.verify(token, process.env.JWT_SECRET);
         userId = user.id;
 
         var dbUser = await UserSchema.findOne({ _id: userId }).lean();
         if (!dbUser) res.status(401).json({ status: 'error', code: 'invalid_user', description: 'Invalid user!' });
     } catch (error) {
+        terminal.error(`[SERVER] Failed at authentication: ${error}`);
         return res.status(401).json({ status: 'error', code: 'invalid_token', description: 'Invalid token!' });
     }
     

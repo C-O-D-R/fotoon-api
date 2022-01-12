@@ -68,7 +68,7 @@ Router.post('/', async (req, res) => {
  *      summary: Prisijungti
  *      description: Pateikus vartotojo vardą ir slaptažodį gaunamas JWT raktas, reikalingas tolimesnei autentifikacijai.
  *      tags:
- *          - main
+ *          - auth
  *      requestBody:
  *          required: true
  *          content:

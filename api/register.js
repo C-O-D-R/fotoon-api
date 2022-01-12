@@ -48,7 +48,7 @@ Router.post('/', async (req, res) => {
     }
 
     if (usernamePlain.length < 4 || usernamePlain.length > 20) {
-        return res.status(406).json({ status: 'error', code: 'invalid_username_length', description: 'Invalid username length (should be > 4 characters and < 20)!' });
+        return res.status(406).json({ status: 'error', code: 'invalid_username_length', description: 'Invalid username length, username should be more than 4 characters and less than 20!' });
     }
 
     // Hashed Password
@@ -87,7 +87,7 @@ Router.post('/', async (req, res) => {
  *      summary: Užsiregsitruoti
  *      description: Pateikus vartojo vardą ir slaptažodį, duomenų bazėje bus sukuriamas įrašas.
  *      tags:
- *          - main
+ *          - auth
  *      requestBody:
  *          required: true,
  *          content:
@@ -160,7 +160,7 @@ Router.post('/', async (req, res) => {
  *                  example: invalid_username_length
  *              description:
  *                  type: string
- *                  example: Invalid username length (should be >= 5 characters and <= 20)!
+ *                  example: Invalid username length, username should be more than 4 characters and less than 20!
  * 
  *      RegistrationFailedPasswordLength:
  *          type: object

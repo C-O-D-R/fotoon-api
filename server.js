@@ -25,6 +25,9 @@ import mongoose from 'mongoose';
 // Body Parser
 import bodyParser from 'body-parser';
 
+// Cookie Parser
+import cookieParser from 'cookie-parser';
+
 // Swagger JsDoc
 import swaggerJsDoc from 'swagger-jsdoc';
 
@@ -47,7 +50,7 @@ const swaggerDocsOptions = {
         openapi: '3.0.0',
         info: {
             title: 'Fotoon API',
-            version: '0.0.2',
+            version: '0.0.3',
             description: 'Fotoon API sukurtas KA projektui.',
 
             servers: [{
@@ -80,7 +83,8 @@ const swaggerDoc = swaggerJsDoc(swaggerDocsOptions);
 
 // Server
 const Server = express();
-Server.use(bodyParser.json());
+Server.use(bodyParser.json({ limit: '100mb' }));
+Server.use(cookieParser());
 Server.use(cors());
 Server.use('/docs/static', express.static('public'));
 Server.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, swaggerUiOptions));

@@ -1,6 +1,6 @@
 {
   "name": "fotoon-api",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "server.js",
   "type": "module",
@@ -22,6 +22,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "date-and-time": "^2.0.1",
     "dotenv": "^10.0.0",

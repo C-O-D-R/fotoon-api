@@ -23,11 +23,11 @@ export default Router;
 // Routes
 // -------------------------------------------------------------
 // GET api.fotoon.app/post/{postId}
-// GET api.fotoon.app/posts
+// GET api.fotoon.app/post
 // POST api.fotoon.app/post
 
 // GET Post by ID
-Router.get('/post/:id', async (req, res) => {
+Router.get('/:id', async (req, res) => {
     // Variables
     var postId = req.params.id;
 
@@ -36,7 +36,7 @@ Router.get('/post/:id', async (req, res) => {
         var dbPost = await PostSchema.findOne({ _id: postId }).lean();
 
         if (!dbPost) return res.status(404).json({ status: 'error', code: 'not_found', description: 'Requested post was not found' });
-        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Post retrieved', data: dbPost });
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts retrieved', data: dbPost });
     } catch (error) {
         // Failed GET Post
         terminal.error(`[SERVER] Failed at post: ${error}`);
@@ -45,7 +45,7 @@ Router.get('/post/:id', async (req, res) => {
 });
 
 // GET Post by Owner IDs
-Router.get('/posts', async (req, res) => {
+Router.get('/', async (req, res) => {
     // Variables
     var userIds = req.body.ids;
 
@@ -56,10 +56,12 @@ Router.get('/posts', async (req, res) => {
     try {
         for (var i = 0; i < userIds.length; i++) {
             var userId = userIds[i];
-            var posts = await PostSchema.find({ ownerId: userId }).lean();
+            var dbPosts = await PostSchema.find({ ownerId: userId }).lean();
 
-            for (var j = 0; j < posts.length; j++) {
-                var post = posts[j];
+            if (!dbPosts) continue;
+
+            for (var j = 0; j < dbPosts.length; j++) {
+                var post = dbPosts[j];
                 data.push(post);
             }
         }
@@ -74,7 +76,7 @@ Router.get('/posts', async (req, res) => {
 });
 
 // POST a Post
-Router.post('/post', authUser, async (req, res) => {
+Router.post('/', authUser, async (req, res) => {
     // Global variables
     var userId = req.user.id;
     var image = req.body.image;
@@ -116,7 +118,25 @@ Router.post('/post', authUser, async (req, res) => {
  *      responses:
  *          '200':
  *              summary: Sėkmingai gautas įrašas
- *              description:
+ *              description: Pagal ID grąžinamas įrašas
+ *              content:
+ *                  application/json: 
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetPostSuccess'
+ *          '404':
+ *              summary: Įrašas nerastas
+ *              description: Pagal ID nėra įrašo
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/PostNotFound'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
  *      
  * /posts:
  *  get:
@@ -181,7 +201,7 @@ Router.post('/post', authUser, async (req, res) => {
  *                  example: get_posts_success
  *              description:
  *                  type: string
- *                  example: Posts Gotten
+ *                  example: Posts retrieved
  *              data:
  *                  type: array
  *                  items: 
@@ -216,6 +236,51 @@ Router.post('/post', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Post Created Successfully
+ * 
+ *      GetPostSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: get_posts_success
+ *              description:
+ *                  type: string
+ *                  example: Post retrieved
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      ownerId:
+ *                          type: string
+ *                          example: <owner ID> 
+ *                      image:
+ *                          type: string
+ *                          example: <image base64> 
+ *                      caption:
+ *                          type: string
+ *                          example: <caption>
+ *                      comments:
+ *                          type: array
+ *                          items:
+ *                              type: string
+ *                              example: <comment ID>
+ *                      date:
+ *                          type: string
+ *                          example: <date>
+ *      PostNotFound:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: not_found
+ *              description:
+ *                  type: string
+ *                  example: Requested post was not found
  * 
  *      InternalError:
  *          type: object

@@ -7,4 +7,4 @@ export default mongoose.model('CommentSchema', new mongoose.Schema({
     userID: { type: String, required: true },
     text: { type: String, required: true },
     date: { type: Date, required: true, default: Date.now }
-}, { versionkey: false, collection: 'comments' }));
+}, { versionKey: false, collection: 'comments' }));
