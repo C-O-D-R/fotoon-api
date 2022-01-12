@@ -352,6 +352,45 @@ Router.patch('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/UserNotFound'
+ * 
+ * /user/follow/{userId}:
+ *  post:
+ *      summary: Pasekti vartotoja
+ *      description: Duomenų bazėje pakeičiama zmogaus sekimas
+ *      tags:
+ *          - user
+ *      responses:
+ *          '406':
+ *              summary: Netinkamas ID formatas
+ *              description: ID formatas neatitinka standarto
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidIdFormat'
+ *          '200':
+ *              summary: Pasektas vartotojas
+ *              description: Sėkmingai pasektas vartotojas
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SuccessFollow'                                 
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
+ *          '404':
+ *              summary: Nerastas vartotojas
+ *              description: Duomenų bazėje nėra tokio vartotojo
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          oneOf:
+ *                              - $ref: '#/components/schemas/UserNotFound'
+ *                              - $ref: '#/components/schemas/UserNotFoundInDb' 
+ * 
  * /user/unfollow/{userId}:
  *  post:
  *      summary: Atsekti vartotoja
@@ -360,7 +399,7 @@ Router.patch('/', authUser, async (req, res) => {
  *          - user
  *      responses:
  *          '406':
- *              summary: Netinkas ID formatas
+ *              summary: Netinkamas ID formatas
  *              description: ID formatas neatitinka standarto
  *              content:
  *                  application/json:
@@ -379,7 +418,16 @@ Router.patch('/', authUser, async (req, res) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/InternalError' 
+ *                          $ref: '#/components/schemas/InternalError'
+ *          '404':
+ *              summary: Nerastas vartotojas
+ *              description: Duomenų bazėje nėra tokio vartotojo
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          oneOf:
+ *                              - $ref: '#/components/schemas/UserNotFound'
+ *                              - $ref: '#/components/schemas/UserNotFoundInDb'  
  * components:
  *  schemas:
  *      UpdateSuccess:
@@ -545,5 +593,31 @@ Router.patch('/', authUser, async (req, res) => {
  *                  example: unfollow_success
  *              description:
  *                  type: string
- *                  example: Unfollowed <unfollowed username>                   
+ *                  example: Unfollowed <unfollowed username>
+ * 
+ *      UserNotFoundInDb:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: user_not_found
+ *              description:
+ *                  type: string
+ *                  example: User was not found in the database!
+ * 
+ *      SuccessFollow:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: follow_success
+ *              description:
+ *                  type: string
+ *                  example: Followed <unfollowed username>                     
  */
