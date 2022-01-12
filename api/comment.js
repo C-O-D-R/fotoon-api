@@ -99,7 +99,6 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/WrongIDFormat'
- * 
  *          '404':
  *              summary: Nerastas komentaras
  *              description: Nerastas komentaro ID duomenų bazėje
@@ -107,7 +106,6 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/CommentNotFound'
- * 
  *          '200':
  *              summary: Sėkmingai gautas komentaras
  *              description: Komntaro ID rastas duomenų bazėje ir sėkmingai gautas
@@ -115,7 +113,6 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/GetSuccess'
- * 
  *          '500':
  *              summary: Serverio klaida
  *              description: API klaida, galimas sutrikimas duomenų bazėje
@@ -124,7 +121,7 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                           $ref: '#/components/schemas/InternalError'
  * 
- * /comment/
+ * /comment:
  *  post:
  *      summary: Sukuriamas komentaras
  *      description: Sukuriamas ir įrašomas komentaras
@@ -138,15 +135,13 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/NotValidComment'
- * 
- *          '200'
+ *          '200':
  *              summary: Sukuriamas Komentaras
  *              description: Sėkmingai patikrintas ir sukurtas komentaras
  *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/PostSuccess'
- * 
  *          '500':
  *              summary: Serverio klaida
  *              description: API klaida, galimas sutrikimas duomenų bazėje
@@ -169,7 +164,6 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Id format is not acceptable!
- * 
  *      CommentNotFound:
  *          type: object
  *          properties:
@@ -182,7 +176,6 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Specified comment was not found!
- * 
  *      GetSuccess:
  *          type: object
  *          properties:
@@ -195,7 +188,6 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Comment has been found!
- * 
  *      InternalError:
  *          type: object
  *          properties:
@@ -208,7 +200,6 @@ Router.post('/', authUser, async (req, res) => {
  *          description:
  *              type: string
  *              example: Internal server error <error message>
- * 
  *      NotValidComment:
  *          type: object
  *          properties:
@@ -221,7 +212,6 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Text has to be less than 150 characters
- * 
  *      PostSuccess:
  *          type: object
  *          properties:

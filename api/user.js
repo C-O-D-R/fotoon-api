@@ -273,7 +273,7 @@ Router.patch('/', authUser, async (req, res) => {
  *      responses:
  *          '200':
  *              summary: Sėkmingas salptazodzio pakeitimas
- *              description:Slaptazodis buvo pakeistas sėkmingai
+ *              description: Slaptazodis buvo pakeistas sėkmingai
  *              content:
  *                  application/json:
  *                      schema:
