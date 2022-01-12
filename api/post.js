@@ -22,7 +22,11 @@ export default Router;
 // -------------------------------------------------------------
 // Routes
 // -------------------------------------------------------------
-// Get Post
+// GET api.fotoon.app/post/{postId}
+// GET api.fotoon.app/posts
+// POST api.fotoon.app/post
+
+// GET Post by ID
 Router.get('/post/:id', async (req, res) => {
     // Variables
     var postId = req.params.id;
@@ -30,12 +34,17 @@ Router.get('/post/:id', async (req, res) => {
     // Get Data
     try {
         var dbPost = await PostSchema.findOne({ _id: postId }).lean();
+
+        if (!dbPost) return res.status(404).json({ status: 'error', code: 'not_found', description: 'Requested post was not found' });
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Post retrieved', data: dbPost });
     } catch (error) {
-        
+        // Failed GET Post
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
     }
 });
 
-// Gets Posts by Owner IDs
+// GET Post by Owner IDs
 Router.get('/posts', async (req, res) => {
     // Variables
     var userIds = req.body.ids;
@@ -56,7 +65,7 @@ Router.get('/posts', async (req, res) => {
         }
 
         // Success
-        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts Gotten', data: data });
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts retrieved', data: data });
     } catch (error) {
         // Failed Post Data
         terminal.error(`[SERVER] Failed at post: ${error}`);
@@ -64,10 +73,12 @@ Router.get('/posts', async (req, res) => {
     }
 });
 
-// Post
-Router.post('/post', async (req, res) => {
+// POST a Post
+Router.post('/post', authUser, async (req, res) => {
     // Global variables
-    const caption = req.body.caption;
+    var userId = req.user.id;
+    var image = req.body.image;
+    var caption = req.body.caption;
 
     // Check
     if (caption.length > 100) {
@@ -77,8 +88,8 @@ Router.post('/post', async (req, res) => {
     // Creating Post
     try {
         await PostSchema.create({
-            userId: req.user.id,
-            postImage: req.body.postImage,
+            ownerId: userId,
+            image: image,
             caption: caption
         });
 
@@ -134,16 +145,16 @@ Router.post('/post', async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/GetPostsSuccess'
- * /post/post:
+ * /post:
  *  post:
- *      summary: Kuriamas posta
- *      description: Kuriamas postas prašant reikšmių iš PostSchema
+ *      summary: Kurti įrašas
+ *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
  *          - post
  *      responses:
  *          '200':
- *              summarry: Sekmingai sukurtas postas
- *              description: Sekmingai sukurti posto duomenys
+ *              summarry: Sekmingai sukurtas įrašas
+ *              description: Sekmingai sukurtas įrašas
  *              content:
  *                  application/json:
  *                      schema:
