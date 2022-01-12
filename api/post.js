@@ -121,6 +121,13 @@ Router.post('/', authUser, async (req, res) => {
  *      tags:
  *          - post
  *      responses:
+ *          '406':
+ *              summary: Neteisingas ID
+ *              description: Pateiktas ID neteisingu formatu 
+ *              content:
+ *                  application/json: 
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidIdFormat'
  *          '200':
  *              summary: Sėkmingai gautas įrašas
  *              description: Pagal ID grąžinamas įrašas
@@ -170,6 +177,13 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/GetPostsSuccess'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'             
  * /post:
  *  post:
  *      summary: Kurti įrašas
@@ -192,7 +206,13 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
- * 
+ *          '406':
+ *              summary: Neteisinga antraste
+ *              description: Pateikta antraste ilgesne nei 100 simboliu
+ *              content:
+ *                  application/json: 
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidCaptionFormat'
  * components:
  *  schemas:
  *      GetPostsSuccess:
@@ -286,6 +306,32 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Requested post was not found
+ * 
+ *      InvalidCaptionFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_caption_length
+ *              description:
+ *                  type: string
+ *                  example: Invalid Caption length, must be no more than 100 characters
+ *  
+ *      InvalidIdFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_format
+ *              description:
+ *                  type: string
+ *                  example: Id format is not acceptable!
  * 
  *      InternalError:
  *          type: object
