@@ -64,7 +64,7 @@ Router.post('/follow/:id', authUser, async (req, res) => {
     var userId = req.user.id;
     var followId = req.params.id;
 
-    // Id format check
+    // Id Format Check
     if (mongoose.isValidObjectId(userId)) {
         return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
     }
