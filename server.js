@@ -92,16 +92,16 @@ Server.get('/', (req, res) => {
 
 // API
 // Route Imports
-import login from './api/login.js'; // Import Login
-import register from './api/register.js'; // Import Register
-import user from './api/user.js'; // Import User
-import post from './api/post.js'; // Import Post
+import login from './api/login.js';         // Import Login
+import register from './api/register.js';   // Import Register
+import user from './api/user.js';           // Import User
+import post from './api/post.js';           // Import Post
 
 // Route Uses
-Server.use('/login', login); // Use Login
-Server.use('/register', register); // Use Register
-Server.use('/user', user); // Use Register
-Server.use('/post', post); // Use post
+Server.use('/login', login);        // Use Login
+Server.use('/register', register);  // Use Register
+Server.use('/user', user);          // Use Register
+Server.use('/post', post);          // Use post
 
 // HTTPS Server
 if (process.env.DEV_MODE.toLowerCase() == 'true') {
