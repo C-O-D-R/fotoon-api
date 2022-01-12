@@ -153,7 +153,7 @@ Router.post('/change-password', authUser, async (req, res) => {
 
     // Database User
     var dbUser = await UserSchema.findOne({ _id: userId }).lean();
-    if (!dbUser) return res.status(404).json({ status: 'error', code: 'user_not_found', description: 'Authenticated user was not found!' });
+    if (!dbUser) return res.status(404).json({ status: 'error', code: 'user_not_found', description: 'Authenticated user was not found in the database!' });
 
     // Update Database
     try {
@@ -230,7 +230,7 @@ Router.patch('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/RequestSuccess'
  * 
- *          '400':
+ *          '406':
  *              summary: Netinkamas ID formatas
  *              description: Pateiktas ID neatitinka MongoDB ObjectID formato.
  *              content:
@@ -272,9 +272,33 @@ Router.patch('/', authUser, async (req, res) => {
  *                              example: <password>
  *      responses:
  *          '200':
- *              summary:
- *              description:
- *          
+ *              summary: Sėkmingas salptazodzio pakeitimas
+ *              description:Slaptazodis buvo pakeistas sėkmingai
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdatePasswordSuccess'
+ *          '404':
+ *              summary: Vartotojas nerastas
+ *              description: Tokio vartotojo nėra duomenų bazėje
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserNotFound'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
+ *          '406':
+ *              summary: Netinkamas slaptažodžio ilgis
+ *              description: Slaptžodis neteisingo ilgio
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidPasswordLenght'     
  * /user:
  *  patch:
  *      summary: Atnaujinti vartotojo informaciją
@@ -321,6 +345,41 @@ Router.patch('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
+ *          '404':
+ *              summary: Vartotojas nerastas
+ *              description: Tokio vartotojo nėra duomenų bazėje
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserNotFound'
+ * /user/unfollow/{userId}:
+ *  post:
+ *      summary: Atsekti vartotoja
+ *      description: Duomenų bazėje pakeičiama zmogaus sekimas
+ *      tags:
+ *          - user
+ *      responses:
+ *          '406':
+ *              summary: Netinkas ID formatas
+ *              description: ID formatas neatitinka standarto
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidIdFormat'
+ *          '200':
+ *              summary: Atsektas vartotojas
+ *              description: Sėkmingai atsektas vartotojas
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SuccessUnfollow'                                 
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError' 
  * components:
  *  schemas:
  *      UpdateSuccess:
@@ -422,4 +481,69 @@ Router.patch('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Internal server error <error message>
+ * 
+ *      UserNotFound:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: user_not_found
+ *              description:
+ *                  type: string
+ *                  example: Authenticated user was not found in the database!
+ * 
+ *      UpdatePasswordSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: password_changed_successfully
+ *              description:
+ *                  type: string
+ *                  example: Password has been changed successfully!
+ * 
+ *      InvalidPasswordLenght:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_password_length
+ *              description:
+ *                  type: string
+ *                  example: Invalid password length! 
+ * 
+ *      InvalidIdFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_format
+ *              description:
+ *                  type: string
+ *                  example: Id format is not acceptable! 
+ * 
+ *      SuccessUnfollow:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: unfollow_success
+ *              description:
+ *                  type: string
+ *                  example: Unfollowed <unfollowed username>                   
  */
