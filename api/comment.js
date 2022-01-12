@@ -31,6 +31,11 @@ Router.get('/:id', async (req, res) => {
     // Variables
     var commentId = req.params.id
 
+    // Id format check
+    if (mongoose.isValidObjectId(commentId)) {
+        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+    }
+
     // Database Variables
     var dbComment;
 
@@ -78,3 +83,155 @@ Router.post('/', authUser, async (req, res) => {
 // --------------------------------------------------------------
 // Documentation
 // --------------------------------------------------------------
+/**
+ * @swagger
+ * /comment/{commentid}:
+ *  get:
+ *      summary: Gaunamas komentaras
+ *      description: Gaunamas komentaras pagal jo ID
+ *      tags:
+ *          - comment
+ *      responses:
+ *          '406':
+ *              summary: Neteisingas ID formatas
+ *              description: ID formatas per trumpas arba per ilgas
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/WrongIDFormat'
+ * 
+ *          '404':
+ *              summary: Nerastas komentaras
+ *              description: Nerastas komentaro ID duomenų bazėje
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CommentNotFound'
+ * 
+ *          '200':
+ *              summary: Sėkmingai gautas komentaras
+ *              description: Komntaro ID rastas duomenų bazėje ir sėkmingai gautas
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetSuccess'
+ * 
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                           $ref: '#/components/schemas/InternalError'
+ * 
+ * /comment/
+ *  post:
+ *      summary: Sukuriamas komentaras
+ *      description: Sukuriamas ir įrašomas komentaras
+ *      tags:
+ *          - comment
+ *      responses:
+ *          '406':
+ *              summary: Komentaras neatitinka reikalavimų
+ *              description: Komentaras ilgesnis nei 150 simbolių
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/NotValidComment'
+ * 
+ *          '200'
+ *              summary: Sukuriamas Komentaras
+ *              description: Sėkmingai patikrintas ir sukurtas komentaras
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/PostSuccess'
+ * 
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'
+ * 
+ * components:
+ *  schemas:
+ *      WrongIDFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: comment_not_found
+ *              description:
+ *                  type: string
+ *                  example: Id format is not acceptable!
+ * 
+ *      CommentNotFound:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: comment_not_found
+ *              description:
+ *                  type: string
+ *                  example: Specified comment was not found!
+ * 
+ *      GetSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: comment_found
+ *              description:
+ *                  type: string
+ *                  example: Comment has been found!
+ * 
+ *      InternalError:
+ *          type: object
+ *          properties:
+ *          status:
+ *              type: string
+ *              example: error
+ *          code:
+ *              type: string
+ *              example: server_error
+ *          description:
+ *              type: string
+ *              example: Internal server error <error message>
+ * 
+ *      NotValidComment:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_text_length
+ *              description:
+ *                  type: string
+ *                  example: Text has to be less than 150 characters
+ * 
+ *      PostSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: comment_created_successfully
+ *              description:
+ *                  type: string
+ *                  example: Comment has been created!
+ */
