@@ -148,7 +148,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: User registered successfully!
- * 
  *      RegistrationFailedUsernameLength:
  *          type: object
  *          properties:
@@ -161,7 +160,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid username length, username should be more than 4 characters and less than 20!
- * 
  *      RegistrationFailedPasswordLength:
  *          type: object
  *          properties:
@@ -174,7 +172,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid password length (should be more than 8 characters)!
- * 
  *      RegistrationFailedUsernameType:
  *          type: object
  *          properties:
@@ -187,7 +184,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid username type!
- * 
  *      RegistrationFailedPasswordType:
  *          type: object
  *          properties:
@@ -200,7 +196,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid password type!
- * 
  *      RegistrationFailedUsernameString:
  *          type: object
  *          properties:
@@ -213,7 +208,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid username string (username has to consist only of A-Z, a-z, -)!
- * 
  *      RegistrationFailedUsernameExists:
  *          type: object
  *          properties:
@@ -226,7 +220,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Username already exists!
- * 
  *      InternalError:
  *          type: object
  *          properties:

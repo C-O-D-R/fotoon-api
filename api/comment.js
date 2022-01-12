@@ -79,7 +79,6 @@ Router.post('/', authUser, async (req, res) => {
     }
 });
 
-
 // --------------------------------------------------------------
 // Documentation
 // --------------------------------------------------------------
@@ -112,7 +111,7 @@ Router.post('/', authUser, async (req, res) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/GetSuccess'
+ *                          $ref: '#/components/schemas/GetCommentSuccess'
  *          '500':
  *              summary: Serverio klaida
  *              description: API klaida, galimas sutrikimas duomenų bazėje
@@ -120,13 +119,29 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                           $ref: '#/components/schemas/InternalError'
- * 
  * /comment:
  *  post:
  *      summary: Sukuriamas komentaras
  *      description: Sukuriamas ir įrašomas komentaras
  *      tags:
  *          - comment
+ *      requestBody:
+ *          required: true,
+ *          constent:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          postId:
+ *                              type: string
+ *                              example: <postId>
+ *                          userId:
+ *                              type: string
+ *                              example: <userId>
+ *                          text:
+ *                              type: string
+ *                              maxLength: 150
+ *                              example: text
  *      responses:
  *          '406':
  *              summary: Komentaras neatitinka reikalavimų
@@ -176,7 +191,7 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Specified comment was not found!
- *      GetSuccess:
+ *      GetCommentSuccess:
  *          type: object
  *          properties:
  *              status:
@@ -188,18 +203,35 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Comment has been found!
+ *              data:
+ *                  type: array
+ *                  items:
+ *                      type: object
+ *                      properties:
+ *                          postId:
+ *                              type: string
+ *                              example: <post ID>
+ *                          userId:
+ *                              type: string
+ *                              example: <user ID>
+ *                          text:
+ *                              type: string
+ *                              example: <text>
+ *                          date:
+ *                              type: string
+ *                              example: <date>
  *      InternalError:
  *          type: object
  *          properties:
- *          status:
- *              type: string
- *              example: error
- *          code:
- *              type: string
- *              example: server_error
- *          description:
- *              type: string
- *              example: Internal server error <error message>
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: server_error
+ *              description:
+ *                  type: string
+ *                  example: Internal server error <error message>
  *      NotValidComment:
  *          type: object
  *          properties:

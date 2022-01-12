@@ -126,7 +126,6 @@ Router.post('/', async (req, res) => {
  *                      token:
  *                          type: string
  *                          example: <jwttoken>
- * 
  *      LoginFailed:
  *          type: object
  *          properties:
@@ -139,7 +138,6 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid username or password!
- *      
  *      InternalError:
  *          type: object
  *          properties:
