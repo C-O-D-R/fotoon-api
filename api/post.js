@@ -31,6 +31,11 @@ Router.get('/:id', async (req, res) => {
     // Variables
     var postId = req.params.id;
 
+    // Id format check
+    if (mongoose.isValidObjectId(postId)) {
+        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+    }
+
     // Get Data
     try {
         var dbPost = await PostSchema.findOne({ _id: postId }).lean();

@@ -10,6 +10,9 @@ import UserSchema from '../models/UserSchema.js';
 // Bcrypt
 import bcrypt from 'bcryptjs';
 
+// Mongoose
+import mongoose from 'mongoose';
+
 
 // ----------------------------------------------------------------
 // Router
@@ -31,6 +34,11 @@ export default Router;
 Router.get('/:id', async (req, res) => {
     // Global variables
     const userId = req.params.id;
+
+    // Id format check
+    if (mongoose.isValidObjectId(userId)) {
+        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+    }
 
     // Checking for DB and User
     try {
@@ -55,6 +63,11 @@ Router.post('/follow/:id', authUser, async (req, res) => {
     // Variables
     var userId = req.user.id;
     var followId = req.params.id;
+
+    // Id format check
+    if (mongoose.isValidObjectId(userId)) {
+        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+    }
 
     // Database User
     var dbUser = await UserSchema.findOne({ _id: userId }).lean();
@@ -92,6 +105,11 @@ Router.post('/unfollow/:id', authUser, async (req, res) => {
     // Variables
     var userId = req.user.id;
     var unfollowId = req.params.id;
+
+    // Id format check
+    if (mongoose.isValidObjectId(userId)) {
+        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+    }
 
     // Database User
     var dbUser = await UserSchema.findOne({ _id: userId }).lean();
