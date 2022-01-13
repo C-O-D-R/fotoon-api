@@ -5,9 +5,11 @@ API sukurtas „Fotoon“ nuotraukų bendrinimo tinklui.
 
 ## Naudojami įrankiai ir bibliotekos
 Programavimo kalba:
- - [Node.js 16.0.0](https://nodejs.org/en/about/)  
+ - [Node.js 16.0.0](https://nodejs.org/en/about/)
+  
 Bibliotekų valdymo sistema:
- - [NPM 7.10.0](https://docs.npmjs.com/about-npm)  
+ - [NPM 7.10.0](https://docs.npmjs.com/about-npm)
+  
 Bibliotekos („child“ bibliotekos nepateiktos šiame sąraše):
  - [bcryptjs 2.4.3](https://www.npmjs.com/package/bcryptjs)
  - [body-parser 1.19.0](https://www.npmjs.com/package/body-parser)
@@ -19,7 +21,8 @@ Bibliotekos („child“ bibliotekos nepateiktos šiame sąraše):
  - [jsonwebtoken 8.5.1](https://www.npmjs.com/package/jsonwebtoken)
  - [mongoose 6.0.12](https://www.npmjs.com/package/mongoose)
  - [swagger-jsdoc 6.1.0](https://www.npmjs.com/package/swagger-jsdoc)
- - [swagger-ui-express 4.1.6](https://www.npmjs.com/package/swagger-ui-express)  
+ - [swagger-ui-express 4.1.6](https://www.npmjs.com/package/swagger-ui-express)
+  
 Papildomos bibliotekos:
  - [nodemon 2.0.15](https://www.npmjs.com/package/nodemon)
 
