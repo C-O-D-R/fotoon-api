@@ -272,8 +272,8 @@ Router.patch('/', authUser, async (req, res) => {
  *                              example: <password>
  *      responses:
  *          '200':
- *              summary: Sėkmingas salptazodzio pakeitimas
- *              description: Slaptazodis buvo pakeistas sėkmingai
+ *              summary: Sėkmingas salptažodžio pakeitimas
+ *              description: Slaptažodis buvo pakeistas sėkmingai
  *              content:
  *                  application/json:
  *                      schema:
@@ -298,7 +298,7 @@ Router.patch('/', authUser, async (req, res) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/InvalidPasswordLenght'     
+ *                          $ref: '#/components/schemas/InvalidPasswordLength'     
  * /user:
  *  patch:
  *      summary: Atnaujinti vartotojo informaciją
@@ -355,8 +355,8 @@ Router.patch('/', authUser, async (req, res) => {
  * 
  * /user/follow/{userId}:
  *  post:
- *      summary: Pasekti vartotoja
- *      description: Duomenų bazėje pakeičiama zmogaus sekimas
+ *      summary: Pradėti sekti vartotoją
+ *      description: Duomenų bazėje atnaujinami duomenys „followers“ ir „following“ masyvuose
  *      tags:
  *          - user
  *      responses:
@@ -368,8 +368,8 @@ Router.patch('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InvalidIdFormat'
  *          '200':
- *              summary: Pasektas vartotojas
- *              description: Sėkmingai pasektas vartotojas
+ *              summary: Operacija pavyko
+ *              description: Duomenų bazėje „following“ ir „followers“ masyvai atnaujinti
  *              content:
  *                  application/json:
  *                      schema:
@@ -556,7 +556,7 @@ Router.patch('/', authUser, async (req, res) => {
  *                  type: string
  *                  example: Password has been changed successfully!
  * 
- *      InvalidPasswordLenght:
+ *      InvalidPasswordLength:
  *          type: object
  *          properties:
  *              status:
@@ -619,5 +619,5 @@ Router.patch('/', authUser, async (req, res) => {
  *                  example: follow_success
  *              description:
  *                  type: string
- *                  example: Followed <unfollowed username>                     
+ *                  example: Followed <followed username>                     
  */

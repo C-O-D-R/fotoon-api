@@ -7,8 +7,8 @@ import express from 'express';
 // Post Schema Schema
 import PostSchema from '../models/PostSchema.js';
 
-// File Stream
-import fs from 'fs';
+// Import
+import mongoose from 'mongoose';
 
 
 // -------------------------------------------------------------
@@ -207,8 +207,8 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
  *          '406':
- *              summary: Neteisinga antraste
- *              description: Pateikta antraste ilgesne nei 100 simboliu
+ *              summary: Neteisinga antraštė
+ *              description: Pateikta antraštė ilgesnė nei 100 simbolių
  *              content:
  *                  application/json: 
  *                      schema:

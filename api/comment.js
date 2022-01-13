@@ -11,6 +11,9 @@ import express from 'express';
 // Comment Schema
 import CommentSchema from '../models/CommentSchema.js';
 
+// Mongoose
+import mongoose from 'mongoose';
+
 
 // --------------------------------------------------------------
 // Router
@@ -84,7 +87,7 @@ Router.post('/', authUser, async (req, res) => {
 // --------------------------------------------------------------
 /**
  * @swagger
- * /comment/{commentid}:
+ * /comment/{commentId}:
  *  get:
  *      summary: Gaunamas komentaras
  *      description: Gaunamas komentaras pagal jo ID
@@ -100,14 +103,14 @@ Router.post('/', authUser, async (req, res) => {
  *                          $ref: '#/components/schemas/WrongIDFormat'
  *          '404':
  *              summary: Nerastas komentaras
- *              description: Nerastas komentaro ID duomenų bazėje
+ *              description: Nerastas komentaras duomenų bazėje
  *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/CommentNotFound'
  *          '200':
  *              summary: Sėkmingai gautas komentaras
- *              description: Komntaro ID rastas duomenų bazėje ir sėkmingai gautas
+ *              description: Komentaro ID rastas duomenų bazėje ir sėkmingai gautas
  *              content:
  *                  application/json:
  *                      schema:
