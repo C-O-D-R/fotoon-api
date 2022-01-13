@@ -36,7 +36,7 @@ Router.get('/:id', async (req, res) => {
     const userId = req.params.id;
 
     // Id format check
-    if (mongoose.isValidObjectId(userId)) {
+    if (!mongoose.isValidObjectId(userId)) {
         return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
     }
 
@@ -65,9 +65,7 @@ Router.post('/follow/:id', authUser, async (req, res) => {
     var followId = req.params.id;
 
     // Id Format Check
-    if (mongoose.isValidObjectId(userId)) {
-        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
-    }
+    if (!mongoose.isValidObjectId(userId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
 
     // Database User
     var dbUser = await UserSchema.findOne({ _id: userId }).lean();
@@ -107,9 +105,7 @@ Router.post('/unfollow/:id', authUser, async (req, res) => {
     var unfollowId = req.params.id;
 
     // Id format check
-    if (mongoose.isValidObjectId(userId)) {
-        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
-    }
+    if (!mongoose.isValidObjectId(userId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
 
     // Database User
     var dbUser = await UserSchema.findOne({ _id: userId }).lean();
