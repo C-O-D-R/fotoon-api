@@ -186,7 +186,7 @@ Router.post('/', authUser, async (req, res) => {
  *                          $ref: '#/components/schemas/InternalError'             
  * /post:
  *  post:
- *      summary: Kurti įrašas
+ *      summary: Kurti įrašą
  *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
  *          - post
