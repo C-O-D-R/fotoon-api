@@ -48,7 +48,7 @@ Router.get('/:id', async (req, res) => {
 });
 
 // GET Post by Owner IDs
-Router.get('/', async (req, res) => {
+Router.post('/', async (req, res) => {
     // Variables
     var userIds = req.body.ids;
 
