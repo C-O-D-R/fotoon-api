@@ -42,6 +42,24 @@ Jei buvo nurodyta, kad `DEV_MODE=false`, tada taip pat turi būti nurodyti šie 
   SSL_CERTIFICATE=<path to SSL certificate>
   SSL_CHAIN=<path to SSL chain>
 ```
+  
+## Serverio paleidimas
+
+Šis kodas turi tris paleidimo pasirinkimus:
+  
+
+Paleisti įprastai `node server.js`:
+```bash
+  npm run start
+```
+Paleisti naudojant [nodemon](https://www.npmjs.com/package/nodemon) biblioteką `nodemon server.js`:
+```bash
+  npm run dev
+```
+Sukurti [Docker](https://www.docker.com/resources/what-container) konteinerį:
+```bash
+  npm run docker-build
+```
     
 ## API Dokumentacija
 
