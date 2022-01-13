@@ -29,13 +29,14 @@ global.authUser = async function (req, res, next) {
         userId = user.id;
 
         var dbUser = await UserSchema.findOne({ _id: userId }).lean();
-        if (!dbUser) res.status(401).json({ status: 'error', code: 'invalid_user', description: 'Invalid user!' });
+        if (!dbUser) return res.status(401).json({ status: 'error', code: 'invalid_user', description: 'Invalid user!' });
+        else {
+            req['user'] = { id: userId };
+
+            next();
+        }
     } catch (error) {
         terminal.error(`[SERVER] Failed at authentication: ${error}`);
         return res.status(401).json({ status: 'error', code: 'invalid_token', description: 'Invalid token!' });
     }
-    
-    req['user'] = { id: userId };
-
-    next();
 }
