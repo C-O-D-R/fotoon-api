@@ -35,9 +35,7 @@ Router.get('/:id', async (req, res) => {
     var commentId = req.params.id
 
     // Id format check
-    if (mongoose.isValidObjectId(commentId)) {
-        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
-    }
+    if (!mongoose.isValidObjectId(commentId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
 
     // Database Variables
     var dbComment;

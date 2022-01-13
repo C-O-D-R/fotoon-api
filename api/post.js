@@ -32,9 +32,7 @@ Router.get('/:id', async (req, res) => {
     var postId = req.params.id;
 
     // Id format check
-    if (mongoose.isValidObjectId(postId)) {
-        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
-    }
+    if (!mongoose.isValidObjectId(postId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
 
     // Get Data
     try {
