@@ -4,11 +4,14 @@
 // Express
 import express from 'express';
 
+// Mongoose
+import mongoose from 'mongoose';
+
 // Post Schema Schema
 import PostSchema from '../models/PostSchema.js';
 
-// Import
-import mongoose from 'mongoose';
+// User Schema
+import UserSchema from '../models/UserSchema.js';
 
 
 // -------------------------------------------------------------
@@ -23,7 +26,7 @@ export default Router;
 // Routes
 // -------------------------------------------------------------
 // GET api.fotoon.app/post/{postId}
-// GET api.fotoon.app/post
+// POST api.fotoon.app/post
 // POST api.fotoon.app/post
 
 // GET Post by ID
@@ -47,18 +50,18 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
-// GET Post by Owner IDs
-Router.get('/', async (req, res) => {
-    // Variables
-    var userIds = req.body.ids;
+// GET All Posts
+Router.get('/', authUser, async (req, res) => {
+    // Database User
+    var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
 
     // Data Array
     var data = [];
 
     // Get Data
     try {
-        for (var i = 0; i < userIds.length; i++) {
-            var userId = userIds[i];
+        for (var i = 0; i < dbUser.following.length; i++) {
+            var userId = dbUser.following[i];
             var dbPosts = await PostSchema.find({ ownerId: userId }).lean();
 
             if (!dbPosts) continue;
@@ -151,7 +154,7 @@ Router.post('/', authUser, async (req, res) => {
  * /posts:
  *  get:
  *      summary: Gaunami įrašai
- *      description: Pagal pateiktus varotojų ID's, gaunami visi su šiais ID's susiję įrašai
+ *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
  *          - post
  *      requestBody:
