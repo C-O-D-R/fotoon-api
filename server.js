@@ -50,7 +50,7 @@ const swaggerDocsOptions = {
         openapi: '3.0.0',
         info: {
             title: 'Fotoon API',
-            version: '0.0.3',
+            version: '1.0.0',
             description: 'Fotoon API sukurtas KA projektui.',
 
             servers: [{
