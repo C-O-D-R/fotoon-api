@@ -51,7 +51,7 @@ Router.get('/:id', async (req, res) => {
 });
 
 // GET All Posts
-Router.get('/', authUser, async (req, res) => {
+Router.post('/', authUser, async (req, res) => {
     // Database User
     var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
 
@@ -81,8 +81,8 @@ Router.get('/', authUser, async (req, res) => {
     }
 });
 
-// POST a Post
-Router.post('/', authUser, async (req, res) => {
+// PUT a Post
+Router.put('/', authUser, async (req, res) => {
     // Global variables
     var userId = req.user.id;
     var image = req.body.image;
@@ -152,7 +152,7 @@ Router.post('/', authUser, async (req, res) => {
  *                          $ref: '#/components/schemas/InternalError'
  *      
  * /post/:
- *  get:
+ *  post:
  *      summary: Gaunami įrašai
  *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
@@ -183,7 +183,7 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'             
  * /post:
- *  post:
+ *  put:
  *      summary: Kurti įrašą
  *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
