@@ -145,6 +145,9 @@ Router.post('/change-password', authUser, async (req, res) => {
     var plainPassword = req.body.password;
 
     // Checks
+    // Checks if the password isnt empty
+    if(passwordPlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_password', description: 'Password is empty'});
+
     if (plainPassword.length < 8) return res.status(406).json({ status: 'error', code: 'invalid_password_length', description: 'Invalid password length!' });
 
     // Database User
@@ -184,8 +187,15 @@ Router.patch('/', authUser, async (req, res) => {
     var longBio = req.body.longBio == undefined ? dbUser.longBio : req.body.longBio;
 
     // Checks
+    // Short Bio - not empty check
+    if(shortBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_short_bio', description: 'Short Bio is empty'});
+    
     // Short Bio - Character Limit 50
     if (shortBio.length > 50) return res.status(406).json({ status: 'error', code: 'invalid_short_bio_length', description: 'Invalid short bio length!' });
+
+    // Short Bio - not empty check
+    if(longBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_long_bio', description: 'Long Bio is empty'});
+
     // Long Bio - Character Limit 500
     if (longBio.length > 500) return res.status(406).json({ status: 'error', code: 'invalid_long_bio_length', description: 'Invalid long bio length!' });
 

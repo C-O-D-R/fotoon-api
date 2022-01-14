@@ -62,6 +62,9 @@ Router.post('/', authUser, async (req, res) => {
     var text = req.body.text;
 
     // Checks
+    //Checks if comment isn`t empty
+    if(text.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_text', description: 'text is empty'});
+
     if (text.length > 150) return res.status(406).json({ status: 'error', code: 'invalid_text_length', description: 'Text has to be less than 150 characters' });
 
     // Create Post
@@ -127,12 +130,15 @@ Router.post('/', authUser, async (req, res) => {
  *      tags:
  *          - comment
  *      requestBody:
- *          required: true,
- *          constent:
+ *          required: true
+ *          content:
  *              application/json:
  *                  schema:
  *                      type: object
  *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          postId:
  *                              type: string
  *                              example: <postId>
