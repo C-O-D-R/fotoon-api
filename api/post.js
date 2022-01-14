@@ -157,6 +157,16 @@ Router.post('/', authUser, async (req, res) => {
  *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
  *          - post
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '200':
  *              summary: Sėkmingai gauti įrašai
@@ -185,6 +195,9 @@ Router.post('/', authUser, async (req, res) => {
  *                  schema:
  *                      type: object
  *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          image:
  *                              type: string
  *                              example: <base64>

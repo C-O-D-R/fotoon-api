@@ -262,6 +262,9 @@ Router.patch('/', authUser, async (req, res) => {
  *                  schema:
  *                      type: object
  *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          password:
  *                              type: string
  *                              minLength: 8
@@ -306,7 +309,10 @@ Router.patch('/', authUser, async (req, res) => {
  *              application/json:
  *                  schema:
  *                      type: object
- *                      properties: 
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          avatar:
  *                              type: string
  *                              example: <base64image>
@@ -355,6 +361,16 @@ Router.patch('/', authUser, async (req, res) => {
  *      description: Duomenų bazėje atnaujinami duomenys „followers“ ir „following“ masyvuose
  *      tags:
  *          - user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '406':
  *              summary: Netinkamas ID formatas
@@ -393,6 +409,16 @@ Router.patch('/', authUser, async (req, res) => {
  *      description: Duomenų bazėje pakeičiama zmogaus sekimas
  *      tags:
  *          - user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '406':
  *              summary: Netinkamas ID formatas
