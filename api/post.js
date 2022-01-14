@@ -151,25 +151,12 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
  *      
- * /posts:
+ * /post/:
  *  get:
  *      summary: Gaunami įrašai
  *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
  *          - post
- *      requestBody:
- *          required: true,
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          ids:
- *                              type: array
- *                              items:
- *                                  type: string
- *                                  example: <user ID>
- *          
  *      responses:
  *          '200':
  *              summary: Sėkmingai gauti įrašai
