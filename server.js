@@ -70,19 +70,6 @@ const swaggerUiOptions = {
         defaultModelsExpandDepth: -1
     }
 }
-// CORS Options
-var whitelist = ['http://localhost', 'https://fotoon.app' ]
-var corsOptions = {
-  credentials: true,
-  origin: function(origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
 
 // ----------------------------------------------------------------
 // Main Code
@@ -97,7 +84,7 @@ const swaggerDoc = swaggerJsDoc(swaggerDocsOptions);
 const Server = express();
 Server.use(bodyParser.json({ limit: '100mb' }));
 Server.use(cookieParser());
-Server.use(cors(corsOptions));
+Server.use(cors());
 Server.use('/docs/static', express.static('public'));
 Server.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, swaggerUiOptions));
 
