@@ -86,7 +86,7 @@ Router.post('/', authUser, async (req, res) => {
     // Global variables
     var userId = req.user.id;
     var image = req.body.image;
-    var caption = req.body.caption;
+    var caption = req.body == undefined ? ' ' : req.body.caption;
 
     // Check
     if (caption.length > 100) {
