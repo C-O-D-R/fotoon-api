@@ -121,22 +121,6 @@ Router.post('/', authUser, async (req, res) => {
  *      description: Gaunamas įrašas pagal jo ID
  *      tags:
  *          - post
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          userId:
- *                              type: string
- *                              example: <userId>
- *                          image:
- *                              type: string
- *                              example: <base64>
- *                          caption:
- *                              type: text
- *                              example: caption
  *      responses:
  *          '406':
  *              summary: Neteisingas ID
@@ -194,6 +178,22 @@ Router.post('/', authUser, async (req, res) => {
  *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
  *          - post
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          userId:
+ *                              type: string
+ *                              example: <userId>
+ *                          image:
+ *                              type: string
+ *                              example: <base64>
+ *                          caption:
+ *                              type: text
+ *                              example: caption
  *      responses:
  *          '200':
  *              summarry: Sekmingai sukurtas įrašas
