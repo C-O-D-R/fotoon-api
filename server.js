@@ -71,7 +71,7 @@ const swaggerUiOptions = {
     }
 }
 // CORS Options
-var whitelist = ['localhost', 'https://fotoon.app' ]
+var whitelist = ['http://localhost', 'https://fotoon.app' ]
 var corsOptions = {
   credentials: true,
   origin: function(origin, callback) {
