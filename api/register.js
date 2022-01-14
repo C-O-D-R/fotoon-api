@@ -29,6 +29,10 @@ Router.post('/', async (req, res) => {
 
     // Checks
     // Types
+    if(passwordPlain.match(/^\s*$/)){
+        return res.status(406).json({ status: 'error', code: 'invalid_password', description: 'Password is empty'});
+    }
+
     if (!usernamePlain || typeof usernamePlain !== 'string') {
         return res.status(406).json({ status: 'error', code: 'invalid_username_type', description: 'Invalid username type!' });
     }
