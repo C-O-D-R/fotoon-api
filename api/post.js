@@ -4,11 +4,14 @@
 // Express
 import express from 'express';
 
+// Mongoose
+import mongoose from 'mongoose';
+
 // Post Schema Schema
 import PostSchema from '../models/PostSchema.js';
 
-// File Stream
-import fs from 'fs';
+// User Schema
+import UserSchema from '../models/UserSchema.js';
 
 
 // -------------------------------------------------------------
@@ -23,7 +26,7 @@ export default Router;
 // Routes
 // -------------------------------------------------------------
 // GET api.fotoon.app/post/{postId}
-// GET api.fotoon.app/post
+// POST api.fotoon.app/post
 // POST api.fotoon.app/post
 
 // GET Post by ID
@@ -32,9 +35,7 @@ Router.get('/:id', async (req, res) => {
     var postId = req.params.id;
 
     // Id format check
-    if (mongoose.isValidObjectId(postId)) {
-        return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
-    }
+    if (!mongoose.isValidObjectId(postId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
 
     // Get Data
     try {
@@ -49,18 +50,18 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
-// GET Post by Owner IDs
-Router.get('/', async (req, res) => {
-    // Variables
-    var userIds = req.body.ids;
+// GET All Posts
+Router.get('/', authUser, async (req, res) => {
+    // Database User
+    var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
 
     // Data Array
     var data = [];
 
     // Get Data
     try {
-        for (var i = 0; i < userIds.length; i++) {
-            var userId = userIds[i];
+        for (var i = 0; i < dbUser.following.length; i++) {
+            var userId = dbUser.following[i];
             var dbPosts = await PostSchema.find({ ownerId: userId }).lean();
 
             if (!dbPosts) continue;
@@ -121,6 +122,13 @@ Router.post('/', authUser, async (req, res) => {
  *      tags:
  *          - post
  *      responses:
+ *          '406':
+ *              summary: Neteisingas ID
+ *              description: Pateiktas ID neteisingu formatu 
+ *              content:
+ *                  application/json: 
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidIdFormat'
  *          '200':
  *              summary: Sėkmingai gautas įrašas
  *              description: Pagal ID grąžinamas įrašas
@@ -146,7 +154,7 @@ Router.post('/', authUser, async (req, res) => {
  * /post/:
  *  get:
  *      summary: Gaunami įrašai
- *      description: Pagal pateiktus varotojų ID's, gaunami visi su šiais ID's susiję įrašai
+ *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
  *          - post
  *      responses:
@@ -159,34 +167,17 @@ Router.post('/', authUser, async (req, res) => {
  *                          $ref: '#/components/schemas/GetPostsSuccess'
  *          '500':
  *              summary: Serverio klaida
- *              description: API klaida, galimas sutrikimas duomenų bazėje
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/InternalError'
- * 
+ *                          $ref: '#/components/schemas/InternalError'             
  * /post:
  *  post:
- *      summary: Kurti įrašas
+ *      summary: Kurti įrašą
  *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
  *          - post
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          userId:
- *                              type: string
- *                              example: <userId>
- *                          image:
- *                              type: string
- *                              example: <base64>
- *                          caption:
- *                              type: string
- *                              example: caption
  *      responses:
  *          '200':
  *              summarry: Sekmingai sukurtas įrašas
@@ -195,6 +186,7 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/PostSuccess'
+ *      
  *          '500':
  *              summary: Serverio klaida
  *              description: API klaida, galimas sutrikimas duomenų bazėje.
@@ -202,7 +194,13 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
- * 
+ *          '406':
+ *              summary: Neteisinga antraštė
+ *              description: Pateikta antraštė ilgesnė nei 100 simbolių
+ *              content:
+ *                  application/json: 
+ *                      schema:
+ *                          $ref: '#/components/schemas/InvalidCaptionFormat'
  * components:
  *  schemas:
  *      GetPostsSuccess:
@@ -296,6 +294,32 @@ Router.post('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Requested post was not found
+ * 
+ *      InvalidCaptionFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_caption_length
+ *              description:
+ *                  type: string
+ *                  example: Invalid Caption length, must be no more than 100 characters
+ *  
+ *      InvalidIdFormat:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_format
+ *              description:
+ *                  type: string
+ *                  example: Id format is not acceptable!
  * 
  *      InternalError:
  *          type: object
