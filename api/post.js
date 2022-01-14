@@ -185,9 +185,6 @@ Router.post('/', authUser, async (req, res) => {
  *                  schema:
  *                      type: object
  *                      properties:
- *                          userId:
- *                              type: string
- *                              example: <userId>
  *                          image:
  *                              type: string
  *                              example: <base64>
