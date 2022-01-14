@@ -50,8 +50,8 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
-// GET All Posts
-Router.post('/', authUser, async (req, res) => {
+// GET All Followed Posts
+Router.post('/follows', authUser, async (req, res) => {
     // Database User
     var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
 
@@ -70,6 +70,30 @@ Router.post('/', authUser, async (req, res) => {
                 var post = dbPosts[j];
                 data.push(post);
             }
+        }
+
+        // Success
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts retrieved', data: data });
+    } catch (error) {
+        // Failed Post Data
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
+});
+
+// GET All Owned Posts
+Router.post('/owned', authUser, async (req, res) => {
+    // Database User
+    var dbPosts = await PostSchema.find({ ownerId: req.user.id }).lean();
+
+    // Data Array
+    var data = [];
+
+    // Get Data
+    try {
+        for (var i = 0; i < dbPosts.length; i++) {
+            var post = dbPosts[i];
+            data.push(post);
         }
 
         // Success
