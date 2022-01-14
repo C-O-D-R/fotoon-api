@@ -21,7 +21,7 @@ global.authUser = async function (req, res, next) {
     var userId;
 
     // Request Token
-    const token = req.cookies.token;
+    const token = req.body.token;
 
     // Token Validation
     try {
