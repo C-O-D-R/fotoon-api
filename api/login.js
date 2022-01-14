@@ -38,9 +38,13 @@ Router.post('/', async (req, res) => {
     // Checks
     if (usernamePlain == undefined) return;
 
+    if(usernamePlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_username', description: 'Username is empty'});
+
+    if(passwordPlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_pasword', description: 'Password is empty'});
+
     // Request Database User
     const dbUser = await UserSchema.findOne({ username: usernamePlain.toLowerCase() }).lean();
-
+    
 
     // Login
     try {
