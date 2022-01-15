@@ -38,7 +38,8 @@ Router.get('/',  async (req, res) => {
             users.push({
                 _id: dbUsers[i]._id,
                 username: dbUsers[i].username,
-                avatar: dbUsers[i].avatar
+                avatar: dbUsers[i].avatar,
+                shortBio: dbUsers[i].shortBio
             });
         }
 
