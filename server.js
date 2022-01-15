@@ -98,13 +98,15 @@ Server.get('/', (req, res) => {
 import login from './api/login.js';         // Import Login
 import register from './api/register.js';   // Import Register
 import user from './api/user.js';           // Import User
+import users from './api/users.js';         // Import Users
 import post from './api/post.js';           // Import Post
 import comment from './api/comment.js';     // Import Comment
 
 // Route Uses
 Server.use('/login', login);        // Use Login
 Server.use('/register', register);  // Use Register
-Server.use('/user', user);          // Use Register
+Server.use('/user', user);          // Use User
+Server.use('/users', users);        // Use Users
 Server.use('/post', post);          // Use Post
 Server.use('/comment', comment);    // Use Comment
 
