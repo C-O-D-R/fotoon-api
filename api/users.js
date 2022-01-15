@@ -27,7 +27,7 @@ export default Router;
 // ----------------------------------------------------------------
 // GET api.fotoon.app/users
 // Post all users
-Router.get('/users',  async (req, res) => {
+Router.get('/',  async (req, res) => {
     // Checking for DB user
     try {
         // Get users
