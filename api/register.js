@@ -188,6 +188,18 @@ Router.post('/', async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid username type!
+ *      RegistrationFailedPasswordEmpty:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: error
+ *              code:
+ *                  type: string
+ *                  example: invalid_password
+ *              description:
+ *                  type: string
+ *                  example: Password is empty!
  *      RegistrationFailedPasswordType:
  *          type: object
  *          properties:
