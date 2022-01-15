@@ -165,7 +165,7 @@ Router.post('/change-password', authUser, async (req, res) => {
 
     // Checks
     // Checks if the password isnt empty
-    if(passwordPlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_password', description: 'Password is empty'});
+    if(plainPassword.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_password', description: 'Password is empty'});
 
     if (plainPassword.length < 8) return res.status(406).json({ status: 'error', code: 'invalid_password_length', description: 'Invalid password length!' });
 
