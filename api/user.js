@@ -58,6 +58,25 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
+// Post all users
+Router.post('/usersList',  async (req, res) => {
+
+    //Checking for DB user
+    try{
+        //Get users
+        var dbUser = await UserSchema.find().lean();
+
+        // Success
+        return res.status(200).json({ status: 'success', code: 'get_all_users', description: 'Got all users successfully', data: dbUser });
+
+    } catch (error) {
+        // Failed User Data
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
+    
+});
+
 // POST User Follow
 Router.post('/follow/:id', authUser, async (req, res) => {
     // Variables
@@ -259,6 +278,27 @@ Router.patch('/', authUser, async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
+ * /user/usersList:
+ *  post:
+ *      summary: Gaunami visi vartotojai
+ *      description: Pavyko gauti visus vartotojus is duomenų bazės
+ *      tags:
+ *          - user
+ *      responses:
+ *          '200':
+ *              summary: Sėkmingai gauti visi vartotojai
+ *              description: Gauti visi vartotojai iš duomenų bazės
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetAllUsersSuccess'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'                
  * /user/change-password:
  *  post:
  *      summary: Atnaujinti vartotojo slaptažodį
@@ -500,6 +540,19 @@ Router.patch('/', authUser, async (req, res) => {
  *              description:
  *                  type: string
  *                  example: Invalid long bio length!
+ * 
+ *      GetAllUsersSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: get_all_users
+ *              description:
+ *                  type: string
+ *                  example: Got all users successfully
  *              
  *      RequestSuccess:
  *          type: object
