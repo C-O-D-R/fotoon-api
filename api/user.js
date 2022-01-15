@@ -188,13 +188,13 @@ Router.patch('/', authUser, async (req, res) => {
 
     // Checks
     // Short Bio - not empty check
-    if(shortBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_short_bio', description: 'Short Bio is empty'});
+    //if(shortBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_short_bio', description: 'Short Bio is empty'});
     
     // Short Bio - Character Limit 50
     if (shortBio.length > 50) return res.status(406).json({ status: 'error', code: 'invalid_short_bio_length', description: 'Invalid short bio length!' });
 
     // Short Bio - not empty check
-    if(longBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_long_bio', description: 'Long Bio is empty'});
+    //if(longBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_long_bio', description: 'Long Bio is empty'});
 
     // Long Bio - Character Limit 500
     if (longBio.length > 500) return res.status(406).json({ status: 'error', code: 'invalid_long_bio_length', description: 'Invalid long bio length!' });
