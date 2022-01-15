@@ -53,8 +53,20 @@ Router.get('/users',  async (req, res) => {
  *      tags:
  *          - users
  *      responses:
- *          '200'
- *          '500'
+ *          '200':
+ *              summary: Vartotojų duomenys sėkmingai gauti
+ *              description: Operacija buvo atlikta sėkmingai
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RequestSuccess'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalServerError'
  * components:
  *  schemas:
  *      RequestSuccess:
