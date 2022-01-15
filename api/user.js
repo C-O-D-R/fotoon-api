@@ -49,7 +49,7 @@ Router.get('/:id', async (req, res) => {
         if (!dbUser) return res.status(404).json({ status: 'error', code: 'invalid_user', description: `User not found!` });
 
         // Success User Data
-        return res.status(200).json({ status: 'success', code: 'request_success', description: 'User data found successfully!', data: { username: dbUser.username, avatar: dbUser.avatar, shortBio: dbUser.shortBio, longBio: dbUser.longBio, following: dbUser.following, followers: dbUser.followers } });
+        return res.status(200).json({ status: 'success', code: 'request_success', description: 'User data found successfully!', data: { _id: dbUser._id, username: dbUser.username, avatar: dbUser.avatar, shortBio: dbUser.shortBio, longBio: dbUser.longBio, following: dbUser.following, followers: dbUser.followers } });
 
     } catch (error) {
         // Failed User Data
