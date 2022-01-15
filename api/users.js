@@ -27,14 +27,23 @@ export default Router;
 // ----------------------------------------------------------------
 // GET api.fotoon.app/users
 // Post all users
-Router.get('/',  async (req, res) => {
+Router.get('/users',  async (req, res) => {
     // Checking for DB user
     try {
         // Get users
         var dbUsers = await UserSchema.find().lean();
+        var users = [];
+
+        for (var i = 0; i < dbUsers.length; i++) {
+            users.push({
+                _id: dbUsers[i]._id,
+                username: dbUsers[i].username,
+                avatar: dbUsers[i].avatar
+            });
+        }
 
         // Success
-        return res.status(200).json({ status: 'success', code: 'get_all_users', description: 'Got all users successfully', data: dbUsers });
+        return res.status(200).json({ status: 'success', code: 'get_all_users', description: 'Got all users successfully', data: users });
 
     } catch (error) {
         // Failed User Data
