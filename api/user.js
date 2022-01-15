@@ -59,7 +59,7 @@ Router.get('/:id', async (req, res) => {
 });
 
 // Post all users
-Router.post('/usersList',  async (req, res) => {
+Router.get('/usersList',  async (req, res) => {
 
     //Checking for DB user
     try{
@@ -279,7 +279,7 @@ Router.patch('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
  * /user/usersList:
- *  post:
+ *  get:
  *      summary: Gaunami visi vartotojai
  *      description: Pavyko gauti visus vartotojus is duomenų bazės
  *      tags:
