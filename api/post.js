@@ -28,6 +28,7 @@ export default Router;
 // GET api.fotoon.app/post/{postId}
 // POST api.fotoon.app/post
 // POST api.fotoon.app/post
+// DELETE api.fotoon.app/post/${postId}
 
 // GET Post by ID
 Router.get('/:id', async (req, res) => {
@@ -133,7 +134,30 @@ Router.put('/', authUser, async (req, res) => {
         terminal.error(`[SERVER] Failed at user: ${error}`);
         return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
     }
+});
 
+// DELETE Post by ID
+Router.delete('/:id', authUser, async (req, res) => {
+    // Variables
+    var postId = req.params.id;
+
+    // Id format check
+    if (!mongoose.isValidObjectId(postId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+
+    // Get Data
+    try {
+        var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
+        var dbPost = await PostSchema.findOne({ _id: postId });
+
+        if (dbUser._id != dbPost.ownerId) return res.status(401).json({ status: 'error', code: 'unauthorized', description: 'User is not authorized!' });
+        await PostSchema.deleteOne({ _id: postId });
+
+        return res.status(200).json({ status: 'success', code: 'delete_post_success', description: 'Post deleted' });
+    } catch (error) {
+        // Failed GET Post
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
 });
 
 
@@ -251,6 +275,38 @@ Router.put('/', authUser, async (req, res) => {
  *                  application/json: 
  *                      schema:
  *                          $ref: '#/components/schemas/InvalidCaptionFormat'
+ * /post/{postId}/:
+ *  delete:
+ *      summary: Naikinti įrašą
+ *      description: Iš duomenų bazės panaikinamas specifinis autentifikuoto varotojo nuotraukos įrašas
+ *      tags:
+ *          - post
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
+ *      responses:
+ *          '200':
+ *              summary: Sėkmingai panaikintas įrašas
+ *              description: Sėkmingai panaikintas įrašas pagal pateiktą ID
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/DeletePostSuccess'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'   
+ * 
  * components:
  *  schemas:
  *      GetPostsSuccess:
@@ -332,6 +388,19 @@ Router.put('/', authUser, async (req, res) => {
  *                      date:
  *                          type: string
  *                          example: <date>
+ * 
+ *      DeletePostSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: delete_posts_success
+ *              description:
+ *                  type: string
+ *                  example: Post deleted
  *      PostNotFound:
  *          type: object
  *          properties:
