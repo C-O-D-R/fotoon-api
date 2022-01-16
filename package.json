@@ -1,6 +1,6 @@
 {
   "name": "fotoon-api",
-  "version": "1.0.1",
+  "version": "1.1.6",
   "description": "",
   "main": "server.js",
   "type": "module",
@@ -30,6 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15",
+    "response": "^0.18.0",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"
   }

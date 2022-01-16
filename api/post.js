@@ -4,11 +4,14 @@
 // Express
 import express from 'express';
 
+// Mongoose
+import mongoose from 'mongoose';
+
 // Post Schema Schema
 import PostSchema from '../models/PostSchema.js';
 
-// Import
-import mongoose from 'mongoose';
+// User Schema
+import UserSchema from '../models/UserSchema.js';
 
 
 // -------------------------------------------------------------
@@ -23,8 +26,9 @@ export default Router;
 // Routes
 // -------------------------------------------------------------
 // GET api.fotoon.app/post/{postId}
-// GET api.fotoon.app/post
 // POST api.fotoon.app/post
+// POST api.fotoon.app/post
+// DELETE api.fotoon.app/post/${postId}
 
 // GET Post by ID
 Router.get('/:id', async (req, res) => {
@@ -47,18 +51,18 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
-// GET Post by Owner IDs
-Router.get('/', async (req, res) => {
-    // Variables
-    var userIds = req.body.ids;
+// GET All Followed Posts
+Router.post('/follows', authUser, async (req, res) => {
+    // Database User
+    var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
 
     // Data Array
     var data = [];
 
     // Get Data
     try {
-        for (var i = 0; i < userIds.length; i++) {
-            var userId = userIds[i];
+        for (var i = 0; i < dbUser.following.length; i++) {
+            var userId = dbUser.following[i];
             var dbPosts = await PostSchema.find({ ownerId: userId }).lean();
 
             if (!dbPosts) continue;
@@ -78,12 +82,36 @@ Router.get('/', async (req, res) => {
     }
 });
 
-// POST a Post
-Router.post('/', authUser, async (req, res) => {
+// GET All Owned Posts
+Router.post('/owned', authUser, async (req, res) => {
+    // Database User
+    var dbPosts = await PostSchema.find({ ownerId: req.user.id }).lean();
+
+    // Data Array
+    var data = [];
+
+    // Get Data
+    try {
+        for (var i = 0; i < dbPosts.length; i++) {
+            var post = dbPosts[i];
+            data.push(post);
+        }
+
+        // Success
+        return res.status(200).json({ status: 'success', code: 'get_posts_success', description: 'Posts retrieved', data: data });
+    } catch (error) {
+        // Failed Post Data
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
+});
+
+// PUT a Post
+Router.put('/', authUser, async (req, res) => {
     // Global variables
     var userId = req.user.id;
     var image = req.body.image;
-    var caption = req.body.caption;
+    var caption = req.body.caption == undefined ? ' ' : req.body.caption;
 
     // Check
     if (caption.length > 100) {
@@ -106,7 +134,30 @@ Router.post('/', authUser, async (req, res) => {
         terminal.error(`[SERVER] Failed at user: ${error}`);
         return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
     }
+});
 
+// DELETE Post by ID
+Router.delete('/:id', authUser, async (req, res) => {
+    // Variables
+    var postId = req.params.id;
+
+    // Id format check
+    if (!mongoose.isValidObjectId(postId)) return res.status(406).json({ status: 'error', code: 'invalid_format', description:"Id format is not acceptable!"});
+
+    // Get Data
+    try {
+        var dbUser = await UserSchema.findOne({ _id: req.user.id }).lean();
+        var dbPost = await PostSchema.findOne({ _id: postId });
+
+        if (dbUser._id != dbPost.ownerId) return res.status(401).json({ status: 'error', code: 'unauthorized', description: 'User is not authorized!' });
+        await PostSchema.deleteOne({ _id: postId });
+
+        return res.status(200).json({ status: 'success', code: 'delete_post_success', description: 'Post deleted' });
+    } catch (error) {
+        // Failed GET Post
+        terminal.error(`[SERVER] Failed at post: ${error}`);
+        return res.status(500).json({ status: 'error', code: 'server_error', description: `Internal server error ${error}` });
+    }
 });
 
 
@@ -148,25 +199,22 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'
  *      
- * /posts:
- *  get:
+ * /post/:
+ *  post:
  *      summary: Gaunami įrašai
- *      description: Pagal pateiktus varotojų ID's, gaunami visi su šiais ID's susiję įrašai
+ *      description: Gaunami visi su autentifikuotu naudotoju susiję įrašai
  *      tags:
  *          - post
  *      requestBody:
- *          required: true,
+ *          required: true
  *          content:
  *              application/json:
  *                  schema:
  *                      type: object
  *                      properties:
- *                          ids:
- *                              type: array
- *                              items:
- *                                  type: string
- *                                  example: <user ID>
- *          
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '200':
  *              summary: Sėkmingai gauti įrašai
@@ -183,11 +231,27 @@ Router.post('/', authUser, async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/InternalError'             
  * /post:
- *  post:
+ *  put:
  *      summary: Kurti įrašą
  *      description: Sukuriamas įrašas MongoDB duomenų bazėje
  *      tags:
  *          - post
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
+ *                          image:
+ *                              type: string
+ *                              example: <base64>
+ *                          caption:
+ *                              type: text
+ *                              example: caption
  *      responses:
  *          '200':
  *              summarry: Sekmingai sukurtas įrašas
@@ -211,6 +275,38 @@ Router.post('/', authUser, async (req, res) => {
  *                  application/json: 
  *                      schema:
  *                          $ref: '#/components/schemas/InvalidCaptionFormat'
+ * /post/{postId}/:
+ *  delete:
+ *      summary: Naikinti įrašą
+ *      description: Iš duomenų bazės panaikinamas specifinis autentifikuoto varotojo nuotraukos įrašas
+ *      tags:
+ *          - post
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
+ *      responses:
+ *          '200':
+ *              summary: Sėkmingai panaikintas įrašas
+ *              description: Sėkmingai panaikintas įrašas pagal pateiktą ID
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/DeletePostSuccess'
+ *          '500':
+ *              summary: Serverio klaida
+ *              description: API klaida, galimas sutrikimas duomenų bazėje.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/InternalError'   
+ * 
  * components:
  *  schemas:
  *      GetPostsSuccess:
@@ -292,6 +388,19 @@ Router.post('/', authUser, async (req, res) => {
  *                      date:
  *                          type: string
  *                          example: <date>
+ * 
+ *      DeletePostSuccess:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: string
+ *                  example: success
+ *              code:
+ *                  type: string
+ *                  example: delete_posts_success
+ *              description:
+ *                  type: string
+ *                  example: Post deleted
  *      PostNotFound:
  *          type: object
  *          properties:

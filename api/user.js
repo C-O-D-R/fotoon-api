@@ -49,7 +49,7 @@ Router.get('/:id', async (req, res) => {
         if (!dbUser) return res.status(404).json({ status: 'error', code: 'invalid_user', description: `User not found!` });
 
         // Success User Data
-        return res.status(200).json({ status: 'success', code: 'request_success', description: 'User data found successfully!', data: { username: dbUser.username, avatar: dbUser.avatar, shortBio: dbUser.shortBio, longBio: dbUser.longBio, following: dbUser.following, followers: dbUser.followers } });
+        return res.status(200).json({ status: 'success', code: 'request_success', description: 'User data found successfully!', data: { _id: dbUser._id, username: dbUser.username, avatar: dbUser.avatar, shortBio: dbUser.shortBio, longBio: dbUser.longBio, following: dbUser.following, followers: dbUser.followers } });
 
     } catch (error) {
         // Failed User Data
@@ -145,6 +145,9 @@ Router.post('/change-password', authUser, async (req, res) => {
     var plainPassword = req.body.password;
 
     // Checks
+    // Checks if the password isnt empty
+    if(plainPassword.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_password', description: 'Password is empty'});
+
     if (plainPassword.length < 8) return res.status(406).json({ status: 'error', code: 'invalid_password_length', description: 'Invalid password length!' });
 
     // Database User
@@ -184,8 +187,15 @@ Router.patch('/', authUser, async (req, res) => {
     var longBio = req.body.longBio == undefined ? dbUser.longBio : req.body.longBio;
 
     // Checks
+    // Short Bio - not empty check
+    //if(shortBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_short_bio', description: 'Short Bio is empty'});
+    
     // Short Bio - Character Limit 50
     if (shortBio.length > 50) return res.status(406).json({ status: 'error', code: 'invalid_short_bio_length', description: 'Invalid short bio length!' });
+
+    // Short Bio - not empty check
+    //if(longBio.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_long_bio', description: 'Long Bio is empty'});
+
     // Long Bio - Character Limit 500
     if (longBio.length > 500) return res.status(406).json({ status: 'error', code: 'invalid_long_bio_length', description: 'Invalid long bio length!' });
 
@@ -248,7 +258,7 @@ Router.patch('/', authUser, async (req, res) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/InternalError'
+ *                          $ref: '#/components/schemas/InternalError'              
  * /user/change-password:
  *  post:
  *      summary: Atnaujinti vartotojo slaptažodį
@@ -262,6 +272,9 @@ Router.patch('/', authUser, async (req, res) => {
  *                  schema:
  *                      type: object
  *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          password:
  *                              type: string
  *                              minLength: 8
@@ -306,7 +319,10 @@ Router.patch('/', authUser, async (req, res) => {
  *              application/json:
  *                  schema:
  *                      type: object
- *                      properties: 
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *                          avatar:
  *                              type: string
  *                              example: <base64image>
@@ -355,6 +371,16 @@ Router.patch('/', authUser, async (req, res) => {
  *      description: Duomenų bazėje atnaujinami duomenys „followers“ ir „following“ masyvuose
  *      tags:
  *          - user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '406':
  *              summary: Netinkamas ID formatas
@@ -393,6 +419,16 @@ Router.patch('/', authUser, async (req, res) => {
  *      description: Duomenų bazėje pakeičiama zmogaus sekimas
  *      tags:
  *          - user
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          token:
+ *                              type: string
+ *                              example: <token>
  *      responses:
  *          '406':
  *              summary: Netinkamas ID formatas

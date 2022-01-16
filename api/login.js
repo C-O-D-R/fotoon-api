@@ -32,20 +32,28 @@ export default Router;
 // Login
 Router.post('/', async (req, res) => {
     // Request Credentials
-    const usernamePlain = req.body.username.toLowerCase();
+    const usernamePlain = req.body.username;
     const passwordPlain = req.body.password;
 
+    // Checks
+    if (usernamePlain == undefined) return;
+
+    if(usernamePlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_username', description: 'Username is empty'});
+
+    if(passwordPlain.match(/^\s*$/)) return res.status(406).json({ status: 'error', code: 'invalid_pasword', description: 'Password is empty'});
+
     // Request Database User
-    const dbUser = await UserSchema.findOne({ username: usernamePlain }).lean();
+    const dbUser = await UserSchema.findOne({ username: usernamePlain.toLowerCase() }).lean();
+    
 
     // Login
     try {
         if (dbUser && await bcrypt.compare(passwordPlain, dbUser.password)) {
             // JWT Token
-            const token = jwt.sign({ id: dbUser._id , username: dbUser.username}, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: dbUser._id, username: dbUser.username }, process.env.JWT_SECRET);
 
             // General Success Authentication
-            return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', data: { token: token }});
+            return res.status(200).json({ status: 'success', code: 'login_success', description: 'User authenticated successfully!', data: { token: token } });
         } else {
             // Password/Username/JWT Failed Authentication
             return res.status(401).json({ status: 'error', code: 'invalid_credentials', description: 'Invalid username or password!' });
