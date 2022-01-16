@@ -1,6 +1,6 @@
 {
   "name": "fotoon-api",
-  "version": "1.0.2",
+  "version": "1.1.6",
   "description": "",
   "main": "server.js",
   "type": "module",
